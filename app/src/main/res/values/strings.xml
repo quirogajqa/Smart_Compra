@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Smart Compra</string>
+    <string name="nombre">Nombre</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="precio">Precio</string>
+    <string name="unidad">Unidad</string>
+    <string name="guardar_producto">Guardar producto</string>
+</resources>
+
