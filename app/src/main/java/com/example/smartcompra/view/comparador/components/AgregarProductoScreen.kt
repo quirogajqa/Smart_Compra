@@ -39,7 +39,6 @@ import com.example.smartcompra.viewmodel.ComparadorViewModel
 fun AgregarProductoScreen(
     viewModel: ComparadorViewModel = hiltViewModel()
 ) {
-    val producto by viewModel.producto.collectAsStateWithLifecycle()
     val productoUiState by viewModel.productoUiState.collectAsStateWithLifecycle()
 
     // 💡 Estado local para controlar si el menú desplegable está abierto
@@ -54,7 +53,7 @@ fun AgregarProductoScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
-            value = producto.nombre,
+            value = productoUiState.nombre,
             onValueChange = { viewModel.onNombreChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -78,7 +77,7 @@ fun AgregarProductoScreen(
         Spacer(Modifier.height(8.dp))
 
         TextField(
-            value = if(producto.precio == 0) "" else producto.precio.toString(),
+            value = if(productoUiState.precio == 0) "" else productoUiState.precio.toString(),
             onValueChange = { viewModel.onPrecioChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -106,7 +105,7 @@ fun AgregarProductoScreen(
 
         Row {
             TextField(
-                value = if (producto.cantidad == 0) "" else producto.cantidad.toString(),
+                value = if (productoUiState.cantidad == 0) "" else productoUiState.cantidad.toString(),
                 onValueChange = { viewModel.onCantidadChanged(it) },
                 shape = AppShape.medium,
                 singleLine = true,
@@ -139,7 +138,7 @@ fun AgregarProductoScreen(
                         .menuAnchor()
                         .fillMaxWidth(),
                     readOnly = true,
-                    value = producto.unidad,
+                    value = productoUiState.unidad,
                     onValueChange = { },
                     shape = AppShape.medium,
                     singleLine = true,

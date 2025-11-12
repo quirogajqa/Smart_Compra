@@ -16,15 +16,12 @@ class ComparadorViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
 
-    private val _producto = MutableStateFlow(Producto())
-    val producto: StateFlow<Producto> = _producto
-
     private val _productoUiState = MutableStateFlow(ProductoUiState())
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
 
     fun onNombreChanged(nombre: String) {
-        _producto.update {
-            _producto.value.copy(nombre = nombre)
+        _productoUiState.update {
+            _productoUiState.value.copy( nombre = nombre)
         }
 
         verifyInput()
@@ -33,8 +30,8 @@ class ComparadorViewModel @Inject constructor(
     fun onCantidadChanged(cantidadString: String) {
         try {
             val cantidad = if(cantidadString.isEmpty()) 0 else cantidadString.toInt()
-            _producto.update {
-                _producto.value.copy(cantidad = cantidad)
+            _productoUiState.update {
+                _productoUiState.value.copy(cantidad = cantidad)
             }
 
             verifyInput()
@@ -47,8 +44,8 @@ class ComparadorViewModel @Inject constructor(
     fun onPrecioChanged(precioString: String) {
         try {
             val precio = if(precioString.isEmpty()) 0 else precioString.toInt()
-            _producto.update {
-                _producto.value.copy(precio = precio)
+            _productoUiState.update {
+                _productoUiState.value.copy(precio = precio)
             }
 
             verifyInput()
@@ -59,18 +56,18 @@ class ComparadorViewModel @Inject constructor(
     }
 
     fun onUnidadChanged(unidad: String) {
-        _producto.update {
-            _producto.value.copy(unidad = unidad)
+        _productoUiState.update {
+            _productoUiState.value.copy(unidad = unidad)
         }
 
         verifyInput()
     }
 
     fun verifyInput() {
-        val enabledAdd = isNombreValid(_producto.value.nombre)
-                && isCantidadValid(_producto.value.cantidad)
-                && isPrecioValid(_producto.value.precio)
-                && isUnidadValid(_producto.value.unidad)
+        val enabledAdd = isNombreValid(_productoUiState.value.nombre)
+                && isCantidadValid(_productoUiState.value.cantidad)
+                && isPrecioValid(_productoUiState.value.precio)
+                && isUnidadValid(_productoUiState.value.unidad)
         _productoUiState.update {
             it.copy(isProductoEnabled = enabledAdd)
         }
@@ -78,15 +75,15 @@ class ComparadorViewModel @Inject constructor(
 
     fun onProductoAdded() {
         val newProducto = Producto(
-            nombre = _producto.value.nombre,
-            cantidad = _producto.value.cantidad,
-            precio = _producto.value.precio,
-            unidad = _producto.value.unidad,
+            nombre = _productoUiState.value.nombre,
+            cantidad = _productoUiState.value.cantidad,
+            precio = _productoUiState.value.precio,
+            unidad = _productoUiState.value.unidad,
             precioNormalizado = CalcularValorNormalizado(
-                _producto.value.cantidad,
-                _producto.value.precio,
-                _producto.value.unidad
-            )
+                _productoUiState.value.cantidad,
+                _productoUiState.value.precio,
+                _productoUiState.value.unidad
+            ),
         )
         _uiState.update {currentState ->
             currentState.copy(
@@ -98,17 +95,38 @@ class ComparadorViewModel @Inject constructor(
         _productoUiState.update {
             _productoUiState.value.copy( isProductoEnabled = false )
         }
-        _producto.update { Producto() }
+        _productoUiState.update { ProductoUiState() }
+
+        VerificarMejorPrecio()
     }
 
     fun CalcularValorNormalizado (cantidad: Int, precio: Int, unidad: String): Int{
         var precioNormalizado: Double
         if ( unidad == "g" || unidad == "mL" ){
-            precioNormalizado = (precio.toDouble() / (cantidad.toDouble() / 1000))
+            precioNormalizado = (precio.toDouble() / (cantidad.toDouble() / 1000.0))
         } else {
             precioNormalizado = (precio.toDouble() / cantidad.toDouble())
         }
         return precioNormalizado.toInt()
+    }
+
+    fun VerificarMejorPrecio () {
+        val productosActuales = _uiState.value.productos
+
+        val menorPrecio = productosActuales.minOfOrNull { it.precioNormalizado }
+
+        val productosActualizados = productosActuales.map { producto ->
+
+            val isBest = producto.precioNormalizado == menorPrecio
+
+            producto.copy(bestPrice = isBest)
+        }
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                productos = productosActualizados
+            )
+        }
     }
 
 }
@@ -123,7 +141,13 @@ fun isUnidadValid(unidad: String): Boolean = !unidad.isEmpty()
 
 
 data class ProductoUiState(
+    val nombre: String = "",
+    val cantidad: Int = 0,
+    val precio: Int = 0,
+    val unidad: String = "",
+    val precioNormalizado: Int = 0,
     val isProductoEnabled: Boolean = false,
+    val bestPrice: Boolean = false
 )
 data class UiState(
     val isEmpty: Boolean = true,

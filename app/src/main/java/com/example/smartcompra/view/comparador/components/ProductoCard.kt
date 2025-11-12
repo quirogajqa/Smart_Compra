@@ -28,7 +28,9 @@ fun ProductoCard (
         )
     ) {
         Column(
-            Modifier.fillMaxSize()
+            Modifier
+                .fillMaxSize()
+                .padding(5.dp)
         ) {
             Text(
                 text = producto.nombre
@@ -38,11 +40,13 @@ fun ProductoCard (
                     Text("Precio: ")
                     Text("Cantidad: ")
                     Text("Precio unitario: ")
+                    Text("Mejor precio: ")
                 }
                 Column {
                     Text(producto.precio.toString())
                     Text(producto.cantidad.toString())
                     Text(producto.precioNormalizado.toString())
+                    Text(producto.bestPrice.toString())
                 }
             }
         }
