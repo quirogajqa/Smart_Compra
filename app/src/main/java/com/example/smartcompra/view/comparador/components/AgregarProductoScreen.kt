@@ -219,7 +219,7 @@ fun AgregarProductoScreen(
             ),
             label = {
                 Text(
-                    "Descuento",
+                    "Descuento (opcional)",
                     style = MaterialTheme.typography.labelLarge
                 )
             },
@@ -246,7 +246,7 @@ fun AgregarProductoScreen(
             ),
             label = {
                 Text(
-                    "Pack",
+                    "Pack (opcional, 2 ó mas)",
                     style = MaterialTheme.typography.labelLarge
                 )
             },
