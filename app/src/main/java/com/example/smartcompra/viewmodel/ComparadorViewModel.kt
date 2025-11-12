@@ -15,18 +15,10 @@ class ComparadorViewModel @Inject constructor(
     private val _productoUiState = MutableStateFlow(ProductoUiState())
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
 
-    val productos = listOf(
-        Producto("Shampoo", "Lider",650, 100000, "un", 10,3,100000, "Unidad", true),
-        Producto("Acondicionador", "",70000, 1000, "un", 0,0,50000, "Litro", false),
-        Producto("Jabón", "",300, 10000, "un",0,0, 80000, "Kilogramo", false),
-        Producto("Pasta dental", "",12000, 1000, "un",0,0, 30000, "Metro", false)
-    )
-
-    private val _productList = MutableStateFlow<List<Producto>>(productos)
-
-    //private val _productList = MutableStateFlow<List<Producto>>(emptyList())
+    private val _productList = MutableStateFlow<List<Producto>>(emptyList())
 
     val productList: StateFlow<List<Producto>> = _productList
+
     fun onNombreChanged(nombre: String) {
         _productoUiState.update {
             _productoUiState.value.copy( nombre = nombre)
@@ -111,8 +103,25 @@ class ComparadorViewModel @Inject constructor(
                 && isCantidadValid(_productoUiState.value.cantidad)
                 && isPrecioValid(_productoUiState.value.precio)
                 && isUnidadValid(_productoUiState.value.unidad)
+                && isPackValid(_productoUiState.value.pack)
         _productoUiState.update {
             it.copy(isProductoEnabled = enabledAdd)
+        }
+        verifyClear()
+    }
+
+    private fun verifyClear() {
+        val producto = _productoUiState.value
+        val isEnabledClear =  producto.nombre.isNotEmpty()
+                || !producto.marca.isNullOrEmpty()
+                || producto.precio != 0
+                || producto.cantidad != 0
+                || producto.unidad.isNotEmpty()
+                || producto.descuento != 0
+                || producto.pack != 0
+
+        _productoUiState.update {
+            it.copy( isEnabledClear = isEnabledClear )
         }
     }
 
@@ -141,7 +150,9 @@ class ComparadorViewModel @Inject constructor(
         _productoUiState.update {
             _productoUiState.value.copy( isProductoEnabled = false )
         }
-        _productoUiState.update { ProductoUiState() }
+        val nombreAnterior = _productoUiState.value.nombre
+        val unidadAnterior = _productoUiState.value.unidad
+        _productoUiState.update { ProductoUiState(nombre = nombreAnterior, unidad = unidadAnterior) }
 
         VerificarMejorPrecio()
 
@@ -199,6 +210,16 @@ class ComparadorViewModel @Inject constructor(
         }
     }
 
+    fun onShowDialog(showDialog: Boolean){
+        _productoUiState.update {
+            _productoUiState.value.copy( showDialog = showDialog)
+        }
+    }
+
+    fun clearShowDialog(){
+        _productoUiState.update { ProductoUiState( showDialog = true ) }
+    }
+
 }
 
 fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
@@ -206,6 +227,8 @@ fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
 fun isCantidadValid(cantidad: Int): Boolean = cantidad > 0
 
 fun isPrecioValid(precio: Int): Boolean = precio > 0
+
+fun isPackValid(pack: Int): Boolean = pack > 0
 
 fun isUnidadValid(unidad: String): Boolean = !unidad.isEmpty()
 
@@ -220,6 +243,8 @@ data class ProductoUiState(
     val pack: Int = 1,
     val precioNormalizado: Int = 0,
     val isProductoEnabled: Boolean = false,
+    val isEnabledClear: Boolean = false,
     val bestPrice: Boolean = false,
     val unidadNormalizada: String = "",
+    val showDialog: Boolean = false
 )

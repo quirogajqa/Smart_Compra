@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -40,7 +41,7 @@ import com.example.smartcompra.viewmodel.ComparadorViewModel
 fun AgregarProductoScreen(
     viewModel: ComparadorViewModel = hiltViewModel()
 ) {
-    val productoUiState by viewModel.productoUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.productoUiState.collectAsStateWithLifecycle()
 
     // 💡 Estado local para controlar si el menú desplegable está abierto
     var expanded by remember { mutableStateOf(false) }
@@ -50,11 +51,12 @@ fun AgregarProductoScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
-            value = productoUiState.nombre,
+            value = uiState.nombre,
             onValueChange = { viewModel.onNombreChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -77,7 +79,7 @@ fun AgregarProductoScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        productoUiState.marca?.let {
+        uiState.marca?.let {
             TextField(
                 value = it,
                 onValueChange = { viewModel.onMarcaChanged(it) },
@@ -104,7 +106,7 @@ fun AgregarProductoScreen(
         Spacer(Modifier.height(8.dp))
 
         TextField(
-            value = if (productoUiState.precio == 0) "" else productoUiState.precio.toString(),
+            value = if (uiState.precio == 0) "" else uiState.precio.toString(),
             onValueChange = { viewModel.onPrecioChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -133,11 +135,14 @@ fun AgregarProductoScreen(
 
         Row {
             TextField(
-                value = if (productoUiState.cantidad == 0) "" else productoUiState.cantidad.toString(),
+                value = if (uiState.cantidad == 0) "" else uiState.cantidad.toString(),
                 onValueChange = { viewModel.onCantidadChanged(it) },
                 shape = AppShape.medium,
                 singleLine = true,
                 modifier = Modifier.weight(5f),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                ),
                 label = {
                     Text(
                         stringResource(R.string.cantidad),
@@ -166,7 +171,7 @@ fun AgregarProductoScreen(
                         .menuAnchor()
                         .fillMaxWidth(),
                     readOnly = true,
-                    value = productoUiState.unidad,
+                    value = uiState.unidad,
                     onValueChange = { },
                     shape = AppShape.medium,
                     singleLine = true,
@@ -209,7 +214,7 @@ fun AgregarProductoScreen(
         Spacer(Modifier.height(8.dp))
 
         TextField(
-            value = if (productoUiState.descuento == 0) "" else productoUiState.descuento.toString(),
+            value = if (uiState.descuento == 0) "" else uiState.descuento.toString(),
             onValueChange = { viewModel.onDescuentoChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -236,7 +241,7 @@ fun AgregarProductoScreen(
         Spacer(Modifier.height(8.dp))
 
         TextField(
-            value = if (productoUiState.pack == 1) "" else productoUiState.pack.toString(),
+            value = if (uiState.pack < 2) "" else uiState.pack.toString(),
             onValueChange = { viewModel.onPackChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -260,26 +265,52 @@ fun AgregarProductoScreen(
             )
         )
 
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.height(8.dp))
 
-        Button(
-            modifier = Modifier,
-            onClick = { viewModel.onProductoAdded() },
-            enabled = productoUiState.isProductoEnabled,
-            shape = AppShape.medium,
-            elevation = ButtonDefaults.buttonElevation(2.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
-                contentColor = MaterialTheme.colorScheme.background
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.guardar_producto),
-                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp)
-            )
+        Row {
+            Button(
+                modifier = Modifier.weight(5f),
+                onClick = {
+                    viewModel.onProductoAdded();
+                    viewModel.onShowDialog(false)
+                },
+                enabled = uiState.isProductoEnabled,
+                shape = AppShape.medium,
+                elevation = ButtonDefaults.buttonElevation(2.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
+                    contentColor = MaterialTheme.colorScheme.background
+                )
+            ) {
+                Text(
+                    text = "Agregar",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp)
+                )
+            }
+
+            Spacer(Modifier.width(8.dp))
+
+            Button(
+                modifier = Modifier.weight(3f),
+                onClick = {
+                    viewModel.clearShowDialog()
+                },
+                enabled = uiState.isEnabledClear,
+                shape = AppShape.medium,
+                elevation = ButtonDefaults.buttonElevation(2.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
+                    contentColor = MaterialTheme.colorScheme.background
+                )
+            ) {
+                Text(
+                    text = "Limpiar",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp)
+                )
+            }
         }
-
     }
 
 }
