@@ -32,6 +32,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.smartcompra.R
 import com.example.smartcompra.ui.theme.AppShape
+import com.example.smartcompra.utils.CLPVisualTransformation
 import com.example.smartcompra.viewmodel.ComparadorViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +46,7 @@ fun AgregarProductoScreen(
     var expanded by remember { mutableStateOf(false) }
 
     // 💡 Lista de opciones de unidad
-    val unidades = listOf("un", "m", "g", "Kg",  "ml", "L")
+    val unidades = listOf("un", "m", "g", "Kg",  "mL", "L")
 
     Column(
         modifier = Modifier
@@ -81,6 +82,7 @@ fun AgregarProductoScreen(
             onValueChange = { viewModel.onPrecioChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
+            visualTransformation = CLPVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number

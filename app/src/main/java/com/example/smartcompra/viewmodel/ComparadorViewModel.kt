@@ -12,13 +12,21 @@ import kotlinx.coroutines.flow.update
 class ComparadorViewModel @Inject constructor(
 
 ) : ViewModel () {
-
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState
-
     private val _productoUiState = MutableStateFlow(ProductoUiState())
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
 
+    val productos = listOf(
+        Producto("Shampoo", 650, 100000, "un", 100000, "Unidad", true),
+        Producto("Acondicionador", 70000, 1000, "un", 50000, "Litro", false),
+        Producto("Jabón", 300, 10000, "un", 80000, "Kilogramo", false),
+        Producto("Pasta dental", 12000, 1000, "un", 30000, "Metro", false)
+    )
+
+    private val _productList = MutableStateFlow<List<Producto>>(productos)
+
+    //private val _productList = MutableStateFlow<List<Producto>>(emptyList())
+
+    val productList: StateFlow<List<Producto>> = _productList
     fun onNombreChanged(nombre: String) {
         _productoUiState.update {
             _productoUiState.value.copy( nombre = nombre)
@@ -63,7 +71,7 @@ class ComparadorViewModel @Inject constructor(
         verifyInput()
     }
 
-    fun verifyInput() {
+    private fun verifyInput() {
         val enabledAdd = isNombreValid(_productoUiState.value.nombre)
                 && isCantidadValid(_productoUiState.value.cantidad)
                 && isPrecioValid(_productoUiState.value.precio)
@@ -84,12 +92,10 @@ class ComparadorViewModel @Inject constructor(
                 _productoUiState.value.precio,
                 _productoUiState.value.unidad
             ),
+            unidadNormalizada = CalcularUnidadNormalizada(_productoUiState.value.unidad)
         )
-        _uiState.update {currentState ->
-            currentState.copy(
-                productos = currentState.productos + newProducto,
-                isEmpty = false
-            )
+        _productList.update {currentList ->
+            currentList + newProducto
         }
 
         _productoUiState.update {
@@ -98,9 +104,11 @@ class ComparadorViewModel @Inject constructor(
         _productoUiState.update { ProductoUiState() }
 
         VerificarMejorPrecio()
+
+        sortProductosByBestPrice()
     }
 
-    fun CalcularValorNormalizado (cantidad: Int, precio: Int, unidad: String): Int{
+    private fun CalcularValorNormalizado (cantidad: Int, precio: Int, unidad: String): Int{
         var precioNormalizado: Double
         if ( unidad == "g" || unidad == "mL" ){
             precioNormalizado = (precio.toDouble() / (cantidad.toDouble() / 1000.0))
@@ -110,22 +118,44 @@ class ComparadorViewModel @Inject constructor(
         return precioNormalizado.toInt()
     }
 
-    fun VerificarMejorPrecio () {
-        val productosActuales = _uiState.value.productos
+    private fun VerificarMejorPrecio () {
+        val productosActuales = _productList.value
 
         val menorPrecio = productosActuales.minOfOrNull { it.precioNormalizado }
 
-        val productosActualizados = productosActuales.map { producto ->
-
-            val isBest = producto.precioNormalizado == menorPrecio
-
-            producto.copy(bestPrice = isBest)
+        _productList.update { currentList ->
+            currentList.map { producto ->
+                val isBest = producto.precioNormalizado == menorPrecio
+                producto.copy(bestPrice = isBest)
+            }
         }
+    }
 
-        _uiState.update { currentState ->
-            currentState.copy(
-                productos = productosActualizados
-            )
+    fun onProductoDeleted(producto: Producto) {
+        _productList.update { currentList ->
+            currentList - producto
+        }
+        VerificarMejorPrecio()
+        sortProductosByBestPrice()
+    }
+
+    private fun sortProductosByBestPrice(){
+        _productList.update { currentList ->
+            currentList.sortedBy { it.precioNormalizado }
+        }
+    }
+
+    private fun CalcularUnidadNormalizada(unidadIngresada: String): String{
+        if (unidadIngresada == "un"){
+            return "Unidad"
+        }else if (unidadIngresada == "m"){
+            return "Metro"
+        }else if (unidadIngresada == "g" || unidadIngresada == "Kg"){
+            return "Kilogramo"
+        } else if (unidadIngresada == "mL" || unidadIngresada == "L") {
+            return "Litro"
+        } else {
+            return unidadIngresada
         }
     }
 
@@ -147,9 +177,6 @@ data class ProductoUiState(
     val unidad: String = "",
     val precioNormalizado: Int = 0,
     val isProductoEnabled: Boolean = false,
-    val bestPrice: Boolean = false
-)
-data class UiState(
-    val isEmpty: Boolean = true,
-    val productos: List<Producto> = emptyList()
+    val bestPrice: Boolean = false,
+    val unidadNormalizada: String = "",
 )

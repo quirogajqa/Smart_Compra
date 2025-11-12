@@ -6,5 +6,6 @@ data class Producto(
     val precio: Int,
     val unidad: String,
     val precioNormalizado: Int,
+    val unidadNormalizada: String,
     val bestPrice: Boolean = false
 )

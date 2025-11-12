@@ -31,7 +31,8 @@ import com.example.smartcompra.viewmodel.ComparadorViewModel
 fun ComparadorScreen(
     viewModel: ComparadorViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val productList by viewModel.productList.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -54,13 +55,16 @@ fun ComparadorScreen(
             AgregarProductoScreen()
 
             // Contenido principal
-            if (uiState.isEmpty) {
+            if (productList.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Ingrese un producto para comparar precios")
+                    Text(
+                        text = "Ingrese un producto para comparar precios",
+                    color = MaterialTheme.colorScheme.tertiary
+                    )
                 }
             } else {
                 LazyColumn(
@@ -70,7 +74,7 @@ fun ComparadorScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(
-                        items = uiState.productos,
+                        items = productList,
                     ) { producto ->
                         ProductoCard(producto = producto)
                     }
