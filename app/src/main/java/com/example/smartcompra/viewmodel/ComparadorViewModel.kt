@@ -103,6 +103,7 @@ class ComparadorViewModel @Inject constructor(
                 && isCantidadValid(_productoUiState.value.cantidad)
                 && isPrecioValid(_productoUiState.value.precio)
                 && isUnidadValid(_productoUiState.value.unidad)
+                && isDescuentoValid(_productoUiState.value.descuento)
                 && isPackValid(_productoUiState.value.pack)
         _productoUiState.update {
             it.copy(isProductoEnabled = enabledAdd)
@@ -228,6 +229,7 @@ fun isCantidadValid(cantidad: Int): Boolean = cantidad > 0
 
 fun isPrecioValid(precio: Int): Boolean = precio > 0
 
+fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
 fun isPackValid(pack: Int): Boolean = pack > 0
 
 fun isUnidadValid(unidad: String): Boolean = !unidad.isEmpty()

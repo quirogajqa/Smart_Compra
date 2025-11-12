@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -35,10 +37,10 @@ import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.viewmodel.ComparadorViewModel
 
 @Composable
-fun ProductoCard (
+fun ProductoCard(
     producto: Producto,
     viewModel: ComparadorViewModel = hiltViewModel()
-){
+) {
 
 
     Card(
@@ -56,10 +58,11 @@ fun ProductoCard (
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
 
-            Row (Modifier
-                .fillMaxWidth(),
+            Row(
+                Modifier
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ){
+            ) {
                 Column {
                     Text(
                         text = producto.nombre,
@@ -90,18 +93,27 @@ fun ProductoCard (
 
             Spacer(Modifier.height(8.dp))
 
-            Row (Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Row(
+                Modifier
+                    .fillMaxSize(),
             ) {
-                Row {
+                Row (
+                    verticalAlignment = Alignment.CenterVertically
+                ){
                     Column {
                         Text("Precio: ", fontWeight = FontWeight.Bold)
                         Text("Cantidad: ", fontWeight = FontWeight.Bold)
-                        if (producto.descuento > 1) Text("Descuento: ", fontWeight = FontWeight.Bold)
+                        if (producto.descuento > 1) Text(
+                            "Descuento: ",
+                            fontWeight = FontWeight.Bold
+                        )
                         if (producto.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(8.dp))
-                        Text("Precio\nunitario: ", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp )
+                        Text(
+                            "Precio\nunitario: ",
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        )
                     }
 
                     Spacer(Modifier.width(12.dp))
@@ -110,13 +122,17 @@ fun ProductoCard (
                         Modifier
                             .width(130.dp)
                     ) {
-                        Text(producto.precio.toChileanPesos(),
+                        Text(
+                            producto.precio.toChileanPesos(),
                             Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Right )
+                            textAlign = TextAlign.Right
+                        )
 
-                        Text("${producto.cantidad} ${producto.unidad}",
+                        Text(
+                            "${producto.cantidad} ${producto.unidad}",
                             Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Right)
+                            textAlign = TextAlign.Right
+                        )
 
                         if (producto.descuento > 1) {
                             Text(
@@ -136,22 +152,26 @@ fun ProductoCard (
 
                         Spacer(Modifier.height(8.dp))
 
-                        Text(producto.precioNormalizado.toChileanPesos(),
+                        Text(
+                            producto.precioNormalizado.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 20.sp
                         )
-                        Text("por ${producto.unidadNormalizada}",
+                        Text(
+                            "por ${producto.unidadNormalizada}",
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold
                         )
                     }
                 }
-
+                Spacer(Modifier.width(2.dp))
                 IconButton(
-                    onClick = { viewModel.onProductoDeleted( producto ) }
+                    onClick = { viewModel.onProductoDeleted(producto) },
+                    Modifier
+                        .align(Alignment.CenterVertically),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -159,7 +179,6 @@ fun ProductoCard (
                     )
                 }
             }
-
         }
     }
 }
