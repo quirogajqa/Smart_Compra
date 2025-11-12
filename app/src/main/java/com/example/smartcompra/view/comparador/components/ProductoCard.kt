@@ -60,11 +60,17 @@ fun ProductoCard (
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
-                Text(
-                    text = producto.nombre,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-
+                Column {
+                    Text(
+                        text = producto.nombre,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                    if (!producto.marca.isNullOrEmpty()) {
+                        Text(
+                            text = producto.marca,
+                        )
+                    }
+                }
                 if (producto.bestPrice) {
                     Card(
                         shape = AppShape.medium,
@@ -92,6 +98,8 @@ fun ProductoCard (
                     Column {
                         Text("Precio: ", fontWeight = FontWeight.Bold)
                         Text("Cantidad: ", fontWeight = FontWeight.Bold)
+                        if (producto.descuento > 1) Text("Descuento: ", fontWeight = FontWeight.Bold)
+                        if (producto.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(8.dp))
                         Text("Precio\nunitario: ", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp )
                     }
@@ -110,6 +118,22 @@ fun ProductoCard (
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right)
 
+                        if (producto.descuento > 1) {
+                            Text(
+                                "${producto.descuento} %",
+                                Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Right
+                            )
+                        }
+
+                        if (producto.pack > 1) {
+                            Text(
+                                "${producto.pack} un",
+                                Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Right
+                            )
+                        }
+
                         Spacer(Modifier.height(8.dp))
 
                         Text(producto.precioNormalizado.toChileanPesos(),
@@ -124,7 +148,6 @@ fun ProductoCard (
                             fontWeight = FontWeight.ExtraBold
                         )
                     }
-
                 }
 
                 IconButton(

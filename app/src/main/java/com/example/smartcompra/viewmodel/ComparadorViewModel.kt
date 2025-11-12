@@ -16,10 +16,10 @@ class ComparadorViewModel @Inject constructor(
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
 
     val productos = listOf(
-        Producto("Shampoo", 650, 100000, "un", 100000, "Unidad", true),
-        Producto("Acondicionador", 70000, 1000, "un", 50000, "Litro", false),
-        Producto("Jabón", 300, 10000, "un", 80000, "Kilogramo", false),
-        Producto("Pasta dental", 12000, 1000, "un", 30000, "Metro", false)
+        Producto("Shampoo", "Lider",650, 100000, "un", 10,3,100000, "Unidad", true),
+        Producto("Acondicionador", "",70000, 1000, "un", 0,0,50000, "Litro", false),
+        Producto("Jabón", "",300, 10000, "un",0,0, 80000, "Kilogramo", false),
+        Producto("Pasta dental", "",12000, 1000, "un",0,0, 30000, "Metro", false)
     )
 
     private val _productList = MutableStateFlow<List<Producto>>(productos)
@@ -32,6 +32,13 @@ class ComparadorViewModel @Inject constructor(
             _productoUiState.value.copy( nombre = nombre)
         }
 
+        verifyInput()
+    }
+
+    fun onMarcaChanged(marca: String?) {
+        _productoUiState.update {
+            _productoUiState.value.copy( marca = marca)
+        }
         verifyInput()
     }
 
@@ -71,6 +78,34 @@ class ComparadorViewModel @Inject constructor(
         verifyInput()
     }
 
+    fun onDescuentoChanged(descuentoString: String) {
+        try {
+            val descuento = if(descuentoString.isEmpty()) 0 else descuentoString.toInt()
+            _productoUiState.update {
+                _productoUiState.value.copy(descuento = descuento)
+            }
+
+            verifyInput()
+        } catch (e: NumberFormatException) {
+            println("Error de formato: $descuentoString no es un número válido.")
+        }
+
+    }
+
+    fun onPackChanged(packString: String) {
+        try {
+            val pack = if(packString.isEmpty()) 0 else packString.toInt()
+            _productoUiState.update {
+                _productoUiState.value.copy(pack = pack)
+            }
+
+            verifyInput()
+        } catch (e: NumberFormatException) {
+            println("Error de formato: $packString no es un número válido.")
+        }
+
+    }
+
     private fun verifyInput() {
         val enabledAdd = isNombreValid(_productoUiState.value.nombre)
                 && isCantidadValid(_productoUiState.value.cantidad)
@@ -84,13 +119,18 @@ class ComparadorViewModel @Inject constructor(
     fun onProductoAdded() {
         val newProducto = Producto(
             nombre = _productoUiState.value.nombre,
+            marca = _productoUiState.value.marca,
             cantidad = _productoUiState.value.cantidad,
             precio = _productoUiState.value.precio,
             unidad = _productoUiState.value.unidad,
+            descuento = _productoUiState.value.descuento,
+            pack = _productoUiState.value.pack,
             precioNormalizado = CalcularValorNormalizado(
                 _productoUiState.value.cantidad,
                 _productoUiState.value.precio,
-                _productoUiState.value.unidad
+                _productoUiState.value.descuento,
+                _productoUiState.value.pack,
+                _productoUiState.value.unidad,
             ),
             unidadNormalizada = CalcularUnidadNormalizada(_productoUiState.value.unidad)
         )
@@ -108,12 +148,12 @@ class ComparadorViewModel @Inject constructor(
         sortProductosByBestPrice()
     }
 
-    private fun CalcularValorNormalizado (cantidad: Int, precio: Int, unidad: String): Int{
+    private fun CalcularValorNormalizado (cantidad: Int, precio: Int, descuento: Int, pack: Int, unidad: String): Int{
         var precioNormalizado: Double
         if ( unidad == "g" || unidad == "mL" ){
-            precioNormalizado = (precio.toDouble() / (cantidad.toDouble() / 1000.0))
+            precioNormalizado = ((precio.toDouble() * ((100.0 - descuento)/100.0)) / ((cantidad.toDouble() * pack) / 1000.0))
         } else {
-            precioNormalizado = (precio.toDouble() / cantidad.toDouble())
+            precioNormalizado = ((precio.toDouble() * ((100.0 - descuento)/100.0)) / (cantidad.toDouble() * pack))
         }
         return precioNormalizado.toInt()
     }
@@ -172,9 +212,12 @@ fun isUnidadValid(unidad: String): Boolean = !unidad.isEmpty()
 
 data class ProductoUiState(
     val nombre: String = "",
+    val marca: String? = "",
     val cantidad: Int = 0,
     val precio: Int = 0,
     val unidad: String = "",
+    val descuento: Int = 0,
+    val pack: Int = 1,
     val precioNormalizado: Int = 0,
     val isProductoEnabled: Boolean = false,
     val bestPrice: Boolean = false,

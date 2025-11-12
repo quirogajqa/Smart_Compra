@@ -46,7 +46,7 @@ fun AgregarProductoScreen(
     var expanded by remember { mutableStateOf(false) }
 
     // 💡 Lista de opciones de unidad
-    val unidades = listOf("un", "m", "g", "Kg",  "mL", "L")
+    val unidades = listOf("un", "m", "g", "Kg", "mL", "L")
 
     Column(
         modifier = Modifier
@@ -77,8 +77,34 @@ fun AgregarProductoScreen(
 
         Spacer(Modifier.height(8.dp))
 
+        productoUiState.marca?.let {
+            TextField(
+                value = it,
+                onValueChange = { viewModel.onMarcaChanged(it) },
+                shape = AppShape.medium,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                    Text(
+                        "Marca (opcional)",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.primary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                    focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                )
+            )
+        }
+
+        Spacer(Modifier.height(8.dp))
+
         TextField(
-            value = if(productoUiState.precio == 0) "" else productoUiState.precio.toString(),
+            value = if (productoUiState.precio == 0) "" else productoUiState.precio.toString(),
             onValueChange = { viewModel.onPrecioChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -181,6 +207,60 @@ fun AgregarProductoScreen(
         }
 
         Spacer(Modifier.height(8.dp))
+
+        TextField(
+            value = if (productoUiState.descuento == 0) "" else productoUiState.descuento.toString(),
+            onValueChange = { viewModel.onDescuentoChanged(it) },
+            shape = AppShape.medium,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            label = {
+                Text(
+                    "Descuento",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.primary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+            )
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        TextField(
+            value = if (productoUiState.pack == 1) "" else productoUiState.pack.toString(),
+            onValueChange = { viewModel.onPackChanged(it) },
+            shape = AppShape.medium,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            label = {
+                Text(
+                    "Pack",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.primary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+            )
+        )
+
+        Spacer(Modifier.width(8.dp))
 
         Button(
             modifier = Modifier,
