@@ -15,7 +15,16 @@ class ComparadorViewModel @Inject constructor(
     private val _productoUiState = MutableStateFlow(ProductoUiState())
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
 
-    private val _productList = MutableStateFlow<List<Producto>>(emptyList())
+    val productos = listOf(
+        Producto("Shampoo", "Lider",650, 100000.0, "un", 10,3,100000.0, "Unidad", true),
+        Producto("Acondicionador", "",70000, 1000.0, "un", 0,0,50000.0, "Litro", false),
+        Producto("Jabón", "",300, 10000.0, "un",0,0, 80000.0, "Kilogramo", false),
+        Producto("Pasta dental", "",12000, 1000.0, "un",0,0, 30000.0, "Metro", false)
+    )
+
+    private val _productList = MutableStateFlow<List<Producto>>(productos)
+
+    //private val _productList = MutableStateFlow<List<Producto>>(emptyList())
 
     val productList: StateFlow<List<Producto>> = _productList
 

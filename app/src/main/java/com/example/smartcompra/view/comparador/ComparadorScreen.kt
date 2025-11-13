@@ -54,18 +54,20 @@ fun ComparadorScreen(
                 title = { Text("Comparador de precios") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.tertiary
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
         floatingActionButton = {
             SmallFloatingActionButton(
                 onClick = { viewModel.onShowDialog(true) },
-                shape = CircleShape
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.tertiary,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar un producto"
+                    contentDescription = "Agregar un producto",
+                    tint = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }
@@ -74,7 +76,6 @@ fun ComparadorScreen(
         Column(
             Modifier
                 .padding(padding)
-                .padding(10.dp)
         ) {
 
             // Contenido principal
@@ -86,7 +87,7 @@ fun ComparadorScreen(
                 ) {
                     Text(
                         text = "Ingrese un producto para comparar precios",
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                 }
             } else {

@@ -48,8 +48,8 @@ fun ProductoCard(
             .padding(vertical = 4.dp),
         shape = AppShape.medium,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.tertiary
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Column(
@@ -78,8 +78,8 @@ fun ProductoCard(
                     Card(
                         shape = AppShape.medium,
                         colors = CardDefaults.cardColors(
-                            containerColor = Color.Green,
-                            contentColor = MaterialTheme.colorScheme.tertiary
+                            containerColor = Color(0xFF4CAF50),
+                            contentColor = Color.White
                         )
                     ) {
                         Box(
@@ -112,7 +112,8 @@ fun ProductoCard(
                         Text(
                             "Precio\nunitario: ",
                             fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
 
@@ -120,7 +121,7 @@ fun ProductoCard(
 
                     Column(
                         Modifier
-                            .width(130.dp)
+                            .width(150.dp)
                     ) {
                         Text(
                             producto.precio.toChileanPesos(),
@@ -138,7 +139,8 @@ fun ProductoCard(
                             Text(
                                 "${producto.descuento} %",
                                 Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Right
+                                textAlign = TextAlign.Right,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         }
 
@@ -157,21 +159,23 @@ fun ProductoCard(
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
                             "por ${producto.unidadNormalizada}",
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
-                            fontWeight = FontWeight.ExtraBold
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                 }
-                Spacer(Modifier.width(2.dp))
+                Spacer(Modifier.width(12.dp))
                 IconButton(
                     onClick = { viewModel.onProductoDeleted(producto) },
                     Modifier
-                        .align(Alignment.CenterVertically),
+                        .align(Alignment.Top),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,

@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SmartCompraTheme {
-                ComprasScreen()
+                ComparadorScreen()
             }
         }
     }

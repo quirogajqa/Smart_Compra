@@ -68,12 +68,14 @@ fun AgregarProductoScreen(
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -93,12 +95,14 @@ fun AgregarProductoScreen(
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.primary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                    focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                    focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                    focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                     focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    cursorColor = MaterialTheme.colorScheme.tertiary,
                 )
             )
         }
@@ -122,12 +126,14 @@ fun AgregarProductoScreen(
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -150,12 +156,14 @@ fun AgregarProductoScreen(
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.primary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                    focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                    focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                    focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                     focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    cursorColor = MaterialTheme.colorScheme.tertiary,
                 )
             )
 
@@ -184,12 +192,14 @@ fun AgregarProductoScreen(
                     // Icono de flecha
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.primary,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                        focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                        focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                        focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                         focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        cursorColor = MaterialTheme.colorScheme.tertiary,
                     )
                 )
 
@@ -199,7 +209,12 @@ fun AgregarProductoScreen(
                 ) {
                     unidades.forEach { unidad ->
                         DropdownMenuItem(
-                            text = { Text(unidad) },
+                            text = {
+                                Text(
+                                    unidad,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                   },
                             onClick = {
                                 viewModel.onUnidadChanged(unidad) // Actualiza el ViewModel
                                 expanded = false                 // Cierra el menú
@@ -229,12 +244,14 @@ fun AgregarProductoScreen(
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -256,12 +273,14 @@ fun AgregarProductoScreen(
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -279,8 +298,7 @@ fun AgregarProductoScreen(
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
-                    disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
-                    contentColor = MaterialTheme.colorScheme.background
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
                 )
             ) {
                 Text(
@@ -301,8 +319,7 @@ fun AgregarProductoScreen(
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
-                    disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
-                    contentColor = MaterialTheme.colorScheme.background
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
                 )
             ) {
                 Text(
