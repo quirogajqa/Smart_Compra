@@ -12,32 +12,44 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
+// Paleta Elegante y Llamativa
+val VerdeEsmeraldaProfundo = Color(0xFF00796B) // Primary
+val TurquesaClaro = Color(0xFF4DB6AC)       // Secondary
+val AmarilloAmbarVibrante = Color(0xFFFFC107) // Acento Llamativo
+val GrisMuyClaro = Color(0xFFF5F5F5)        // Background
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF91ADC8),
-    secondary = Color(0xFFAED6CF),
-    tertiary = Color(0xFFFAFDD6),
-    background = Color(0xFF647FBC),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color(0x6691ADC8),
-    onSecondary = Color(0x66AED6CF),
-    onTertiary = Color(0x66FAFDD6),
-    onBackground = Color(0x66647FBC),
-    onSurface = Color(0xFF1C1B1F)
+    primary = Color(0xFF80CBC4),      // Verde Menta Claro
+    onPrimary = Color.Black,
+    secondary = Color(0xFF26A69A),      // Turquesa Oscuro
+    onSecondary = Color.White,
+    tertiary = Color(0xFFFFC107),     // Amarillo Ámbar (Acento)
+    background = Color(0xFF121212),   // Negro Oscuro
+    surface = Color(0xFF1D1D1D),      // Fondo de las tarjetas (cards)
+    onSurface = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFFAED6CF),
-    secondary = Color(0xFF91ADC8),
-    tertiary = Color(0xFF647FBC),
-    background = Color(0xFFFAFDD6),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color(0x66AED6CF),
-    onSecondary = Color(0x6691ADC8),
-    onTertiary = Color(0x66647FBC),
-    onBackground = Color(0x66FAFDD6),
-    onSurface = Color(0xFF1C1B1F),
+    // Colores Principales del Esquema
+    primary = VerdeEsmeraldaProfundo,   // Barra Superior, Barra Inferior, Botones principales
+    onPrimary = Color.White,            // Texto e iconos sobre Primary
 
-    )
+    // Colores Secundarios
+    secondary = TurquesaClaro,          // Usar para elementos de menor importancia
+    onSecondary = Color.Black,
+
+    // Color Terciario (Acento Llamativo)
+    tertiary = AmarilloAmbarVibrante,   // ¡USADO PARA RESALTAR DESCUENTOS Y PRECIO FINAL EN CARDS!
+    onTertiary = Color.Black,
+
+    // Colores de Fondo
+    background = GrisMuyClaro,          // Fondo de la pantalla principal
+    onBackground = Color.Black,
+
+    // Colores de Superficie (Cards)
+    surface = Color.White,              // Fondo de las Cards
+    onSurface = Color.Black
+)
 
 @Composable
 fun SmartCompraTheme(

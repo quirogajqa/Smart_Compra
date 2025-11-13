@@ -40,8 +40,8 @@ fun CompraCard (
     .padding(vertical = 4.dp),
     shape = AppShape.medium,
     colors = CardDefaults.cardColors(
-    containerColor = MaterialTheme.colorScheme.primary,
-    contentColor = MaterialTheme.colorScheme.tertiary
+    containerColor = MaterialTheme.colorScheme.surface,
+    contentColor = MaterialTheme.colorScheme.onSurface
     )
     ) {
         Column(
@@ -68,6 +68,7 @@ fun CompraCard (
             Row(
                 Modifier
                     .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row (
                     verticalAlignment = Alignment.CenterVertically
@@ -84,7 +85,8 @@ fun CompraCard (
                         Text(
                             "Precio final: ",
                             fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -92,7 +94,7 @@ fun CompraCard (
 
                     Column(
                         Modifier
-                            .width(100.dp)
+                            .width(130.dp)
                     ) {
                         Text(
                             compra.precio.toChileanPesos(),
@@ -110,7 +112,8 @@ fun CompraCard (
                             Text(
                                 "${compra.descuento} %",
                                 Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Right
+                                textAlign = TextAlign.Right,
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         }
 
@@ -127,16 +130,17 @@ fun CompraCard (
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.tertiary
                         )
 
                     }
                 }
-                Spacer(Modifier.width(2.dp))
+                Spacer(Modifier.width(12.dp))
                 IconButton(
                     onClick = { viewModel.onCompraDeleted(compra) },
                     Modifier
-                        .align(Alignment.CenterVertically),
+                        .align(Alignment.Top),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,

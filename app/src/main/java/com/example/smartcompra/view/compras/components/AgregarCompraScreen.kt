@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -41,12 +38,6 @@ fun AgregarCompraScreen (
 ){
     val uiState by viewModel.comprasUiState.collectAsStateWithLifecycle()
 
-    // 💡 Estado local para controlar si el menú desplegable está abierto
-    var expanded by remember { mutableStateOf(false) }
-
-    // 💡 Lista de opciones de unidad
-    val unidades = listOf("un", "m", "g", "Kg", "mL", "L")
-
     Column(
     modifier = Modifier
     .fillMaxWidth()
@@ -66,12 +57,14 @@ fun AgregarCompraScreen (
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -94,12 +87,14 @@ fun AgregarCompraScreen (
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -121,12 +116,14 @@ fun AgregarCompraScreen (
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -148,12 +145,14 @@ fun AgregarCompraScreen (
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -175,12 +174,14 @@ fun AgregarCompraScreen (
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onTertiary
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.tertiary,
             )
         )
 
@@ -198,8 +199,7 @@ fun AgregarCompraScreen (
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
-                    disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
-                    contentColor = MaterialTheme.colorScheme.background
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
                 )
             ) {
                 Text(
@@ -220,8 +220,7 @@ fun AgregarCompraScreen (
                 elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
-                    disabledContainerColor = MaterialTheme.colorScheme.onSecondary,
-                    contentColor = MaterialTheme.colorScheme.background
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
                 )
             ) {
                 Text(

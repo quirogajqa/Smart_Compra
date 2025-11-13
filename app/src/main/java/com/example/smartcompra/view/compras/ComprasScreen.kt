@@ -60,48 +60,55 @@ fun ComprasScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Comparador de precios") },
+                title = { Text("Lista de compras") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.tertiary
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
         floatingActionButton = {
             SmallFloatingActionButton(
                 onClick = { viewModel.onShowDialog(true) },
-                shape = CircleShape
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.tertiary,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar un producto"
+                    contentDescription = "Agregar un producto",
+                    tint = MaterialTheme.colorScheme.onTertiary
                 )
             }
         },
         bottomBar = {
-            BottomAppBar (
+            BottomAppBar(
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.tertiary
-            ){
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ) {
                 Row(
                     Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .padding(horizontal = 40.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     Column {
-                        Text("Precio: ", fontWeight = FontWeight.Bold)
+                        Text(
+                            "Total: ", fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleLarge
+                        )
                     }
 
                     Spacer(Modifier.width(12.dp))
 
                     Column(
-                        Modifier
-                            .width(100.dp)
                     ) {
                         Text(
                             uiState.total.toChileanPesos(),
                             Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Right
+                            textAlign = TextAlign.Right,
+                            style = MaterialTheme.typography.titleLarge
                         )
                     }
 
@@ -114,7 +121,7 @@ fun ComprasScreen(
         Column(
             Modifier
                 .padding(padding)
-                //.padding(10.dp)
+            //.padding(10.dp)
         ) {
 
             // Contenido principal
