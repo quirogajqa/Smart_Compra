@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -21,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -57,7 +59,10 @@ fun ComparadorScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.onShowDialog(true) }) {
+            SmallFloatingActionButton(
+                onClick = { viewModel.onShowDialog(true) },
+                shape = CircleShape
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Agregar un producto"

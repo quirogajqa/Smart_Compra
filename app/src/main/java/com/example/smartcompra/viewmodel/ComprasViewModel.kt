@@ -18,10 +18,10 @@ class ComprasViewModel @Inject constructor(
     val comprasUiState: StateFlow<ComprasUiState> = _comprasUiState
 
     val compras = listOf(
-        Compra("Shampoo", 3,1650, 10, 1),
-        Compra("Acondicionador", 3,2200, 10, 1),
-        Compra("Jabón", 2,1650, 0, 1),
-        Compra("Pasta dental", 1,3456, 5, 3)
+        Compra("Shampoo", 3,1650.0, 10, 1, 4455.0),
+        Compra("Acondicionador", 3,2200.0, 10, 1, 5940.0),
+        Compra("Jabón", 2,1650.0, 0, 1, 3300.0),
+        Compra("Pasta dental", 1,3456.0, 5, 3,3283.0)
     )
 
     private val _comprasList = MutableStateFlow<List<Compra>>(compras)
@@ -38,7 +38,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onPrecioChanged(precioString: String) {
         try {
-            val precio = if(precioString.isEmpty()) 0 else precioString.toInt()
+            val precio = if(precioString.isEmpty()) 0.0 else precioString.toDouble()
             _comprasUiState.update {
                 _comprasUiState.value.copy(precio = precio)
             }
@@ -98,7 +98,12 @@ class ComprasViewModel @Inject constructor(
             cantidad = _comprasUiState.value.cantidad,
             precio = _comprasUiState.value.precio,
             descuento = _comprasUiState.value.descuento,
-            pack = _comprasUiState.value.pack
+            pack = _comprasUiState.value.pack,
+            precioFinal = calcularPrecioFinal(
+                _comprasUiState.value.cantidad,
+                _comprasUiState.value.precio,
+                _comprasUiState.value.descuento
+            )
         )
         _comprasList.update {currentList ->
             currentList + newCompra
@@ -124,7 +129,7 @@ class ComprasViewModel @Inject constructor(
     private fun verifyClear() {
         val producto = _comprasUiState.value
         val isEnabledClear =  producto.nombre.isNotEmpty()
-                || producto.precio != 0
+                || producto.precio != 0.0
                 || producto.cantidad != 0
                 || producto.descuento != 0
                 || producto.pack != 0
@@ -132,6 +137,11 @@ class ComprasViewModel @Inject constructor(
         _comprasUiState.update {
             it.copy( isEnabledClear = isEnabledClear )
         }
+    }
+
+    private fun calcularPrecioFinal(cantidad: Int, precio: Double, descuento: Int): Double{
+        val precioFinal = (cantidad * precio) * (100 - descuento)/100
+        return precioFinal
     }
 
     fun onCompraDeleted(compra: Compra) {
@@ -151,7 +161,7 @@ class ComprasViewModel @Inject constructor(
     }
 }
 private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
-private fun isPrecioValid(precio: Int): Boolean = precio > 0
+private fun isPrecioValid(precio: Double): Boolean = precio > 0.0
 private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
 private fun isPackValid(pack: Int): Boolean = pack > 0
 
@@ -159,9 +169,10 @@ private fun isPackValid(pack: Int): Boolean = pack > 0
 data class ComprasUiState(
     val nombre: String = "",
     val cantidad: Int = 0,
-    val precio: Int = 0,
+    val precio: Double = 0.0,
     val descuento: Int = 0,
     val pack: Int = 1,
+    val precioFinal: Double = 0.0,
     val isButtonAddEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
     val showDialog: Boolean = false

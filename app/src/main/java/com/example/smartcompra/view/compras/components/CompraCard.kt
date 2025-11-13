@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.smartcompra.data.models.Compra
 import com.example.smartcompra.ui.theme.AppShape
@@ -79,6 +80,12 @@ fun CompraCard (
                             fontWeight = FontWeight.Bold
                         )
                         if (compra.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "Precio final: ",
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        )
                     }
 
                     Spacer(Modifier.width(12.dp))
@@ -114,6 +121,14 @@ fun CompraCard (
                                 textAlign = TextAlign.Right
                             )
                         }
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            compra.precioFinal.toChileanPesos(),
+                            Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Right,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        )
 
                     }
                 }

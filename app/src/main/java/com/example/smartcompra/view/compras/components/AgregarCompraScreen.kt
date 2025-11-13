@@ -78,7 +78,7 @@ fun AgregarCompraScreen (
         Spacer(Modifier.height(8.dp))
 
         TextField(
-            value = if (uiState.precio == 0) "" else uiState.precio.toString(),
+            value = if (uiState.precio == 0.0) "" else uiState.precio.toInt().toString(),
             onValueChange = { viewModel.onPrecioChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
@@ -110,7 +110,7 @@ fun AgregarCompraScreen (
             onValueChange = { viewModel.onCantidadChanged(it) },
             shape = AppShape.medium,
             singleLine = true,
-            modifier = Modifier.weight(5f),
+            modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
