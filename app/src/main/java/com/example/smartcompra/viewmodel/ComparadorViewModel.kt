@@ -223,14 +223,14 @@ class ComparadorViewModel @Inject constructor(
 
 }
 
-fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
+private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
 
-fun isCantidadValid(cantidad: Int): Boolean = cantidad > 0
+private fun isCantidadValid(cantidad: Int): Boolean = cantidad > 0
 
-fun isPrecioValid(precio: Int): Boolean = precio > 0
+private fun isPrecioValid(precio: Int): Boolean = precio > 0
 
-fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
-fun isPackValid(pack: Int): Boolean = pack > 0
+private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
+private fun isPackValid(pack: Int): Boolean = pack > 0
 
 fun isUnidadValid(unidad: String): Boolean = !unidad.isEmpty()
 
