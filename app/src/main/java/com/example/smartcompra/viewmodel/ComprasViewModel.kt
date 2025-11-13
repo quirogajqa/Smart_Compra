@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlin.collections.plus
 
@@ -113,6 +114,8 @@ class ComprasViewModel @Inject constructor(
             _comprasUiState.value.copy( isButtonAddEnabled = false )
         }
         _comprasUiState.update { ComprasUiState() }
+
+        calcularTotal()
     }
 
     private fun verifyInput() {
@@ -144,10 +147,19 @@ class ComprasViewModel @Inject constructor(
         return precioFinal
     }
 
+    private fun calcularTotal(){
+        val newTotal = _comprasList.value.sumOf { it.precioFinal }
+        _comprasUiState.update {
+            it.copy( total = newTotal )
+        }
+    }
+
     fun onCompraDeleted(compra: Compra) {
         _comprasList.update { currentList ->
             currentList - compra
         }
+
+        calcularTotal()
     }
 
     fun onShowDialog(showDialog: Boolean){
@@ -173,6 +185,7 @@ data class ComprasUiState(
     val descuento: Int = 0,
     val pack: Int = 1,
     val precioFinal: Double = 0.0,
+    val total: Double = 0.0,
     val isButtonAddEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
     val showDialog: Boolean = false

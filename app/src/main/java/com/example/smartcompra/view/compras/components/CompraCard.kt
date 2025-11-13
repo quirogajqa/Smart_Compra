@@ -92,7 +92,7 @@ fun CompraCard (
 
                     Column(
                         Modifier
-                            .width(130.dp)
+                            .width(100.dp)
                     ) {
                         Text(
                             compra.precio.toChileanPesos(),
