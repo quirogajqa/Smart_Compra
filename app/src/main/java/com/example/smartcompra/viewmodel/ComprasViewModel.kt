@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlin.collections.plus
 
@@ -164,12 +163,12 @@ class ComprasViewModel @Inject constructor(
 
     fun onShowDialog(showDialog: Boolean){
         _comprasUiState.update {
-            _comprasUiState.value.copy( showDialog = showDialog)
+            _comprasUiState.value.copy( showBottomSheet = showDialog)
         }
     }
 
     fun clearShowDialog(){
-        _comprasUiState.update { ComprasUiState( showDialog = true ) }
+        _comprasUiState.update { ComprasUiState( showBottomSheet = true ) }
     }
 }
 private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
@@ -188,5 +187,5 @@ data class ComprasUiState(
     val total: Double = 0.0,
     val isButtonAddEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
-    val showDialog: Boolean = false
+    val showBottomSheet: Boolean = false
 )

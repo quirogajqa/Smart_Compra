@@ -16,9 +16,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,7 +31,8 @@ import com.example.smartcompra.viewmodel.ComprasViewModel
 
 @Composable
 fun AgregarCompraScreen (
-    viewModel: ComprasViewModel = hiltViewModel()
+    viewModel: ComprasViewModel = hiltViewModel(),
+    onCloseSheet: () -> Unit = {},
 ){
     val uiState by viewModel.comprasUiState.collectAsStateWithLifecycle()
 
@@ -214,6 +212,7 @@ fun AgregarCompraScreen (
                 modifier = Modifier.weight(3f),
                 onClick = {
                     viewModel.clearShowDialog()
+                    onCloseSheet()
                 },
                 enabled = uiState.isEnabledClear,
                 shape = AppShape.medium,

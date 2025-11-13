@@ -39,7 +39,8 @@ import com.example.smartcompra.viewmodel.ComparadorViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgregarProductoScreen(
-    viewModel: ComparadorViewModel = hiltViewModel()
+    viewModel: ComparadorViewModel = hiltViewModel(),
+    onCloseSheet: () -> Unit = {},
 ) {
     val uiState by viewModel.productoUiState.collectAsStateWithLifecycle()
 
@@ -290,8 +291,8 @@ fun AgregarProductoScreen(
             Button(
                 modifier = Modifier.weight(5f),
                 onClick = {
-                    viewModel.onProductoAdded();
-                    viewModel.onShowDialog(false)
+                    viewModel.onProductoAdded()
+                    onCloseSheet()
                 },
                 enabled = uiState.isProductoEnabled,
                 shape = AppShape.medium,
