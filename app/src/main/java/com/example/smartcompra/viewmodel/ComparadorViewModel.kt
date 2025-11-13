@@ -50,7 +50,7 @@ class ComparadorViewModel @Inject constructor(
 
     fun onPrecioChanged(precioString: String) {
         try {
-            val precio = if(precioString.isEmpty()) 0 else precioString.toInt()
+            val precio = if(precioString.isEmpty()) 0.0 else precioString.toDouble()
             _productoUiState.update {
                 _productoUiState.value.copy(precio = precio)
             }
@@ -115,7 +115,7 @@ class ComparadorViewModel @Inject constructor(
         val producto = _productoUiState.value
         val isEnabledClear =  producto.nombre.isNotEmpty()
                 || !producto.marca.isNullOrEmpty()
-                || producto.precio != 0
+                || producto.precio != 0.0
                 || producto.cantidad != 0
                 || producto.unidad.isNotEmpty()
                 || producto.descuento != 0
@@ -160,14 +160,14 @@ class ComparadorViewModel @Inject constructor(
         sortProductosByBestPrice()
     }
 
-    private fun CalcularValorNormalizado (cantidad: Int, precio: Int, descuento: Int, pack: Int, unidad: String): Int{
+    private fun CalcularValorNormalizado (cantidad: Int, precio: Double, descuento: Int, pack: Int, unidad: String): Double{
         var precioNormalizado: Double
         if ( unidad == "g" || unidad == "mL" ){
-            precioNormalizado = ((precio.toDouble() * ((100.0 - descuento)/100.0)) / ((cantidad.toDouble() * pack) / 1000.0))
+            precioNormalizado = ((precio * ((100.0 - descuento)/100.0)) / ((cantidad * pack) / 1000.0))
         } else {
-            precioNormalizado = ((precio.toDouble() * ((100.0 - descuento)/100.0)) / (cantidad.toDouble() * pack))
+            precioNormalizado = ((precio * ((100.0 - descuento)/100.0)) / (cantidad * pack))
         }
-        return precioNormalizado.toInt()
+        return precioNormalizado
     }
 
     private fun VerificarMejorPrecio () {
@@ -227,7 +227,7 @@ private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
 
 private fun isCantidadValid(cantidad: Int): Boolean = cantidad > 0
 
-private fun isPrecioValid(precio: Int): Boolean = precio > 0
+private fun isPrecioValid(precio: Double): Boolean = precio > 0.0
 
 private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
 private fun isPackValid(pack: Int): Boolean = pack > 0
@@ -239,11 +239,11 @@ data class ProductoUiState(
     val nombre: String = "",
     val marca: String? = "",
     val cantidad: Int = 0,
-    val precio: Int = 0,
+    val precio: Double = 0.0,
     val unidad: String = "",
     val descuento: Int = 0,
     val pack: Int = 1,
-    val precioNormalizado: Int = 0,
+    val precioNormalizado: Double = 0.0,
     val isProductoEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
     val bestPrice: Boolean = false,
