@@ -1,13 +1,16 @@
 package com.example.smartcompra.viewmodel
 
+import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModel
 import com.example.smartcompra.data.models.Compra
+import com.example.smartcompra.utils.toCapitalizar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.util.Locale
 import javax.annotation.meta.When
 import kotlin.collections.plus
 
@@ -32,7 +35,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onNombreChanged(nombre: String) {
         _comprasUiState.update {
-            _comprasUiState.value.copy( nombre = nombre)
+            _comprasUiState.value.copy( nombre = nombre.trim().toCapitalizar())
         }
 
         verifyInput()

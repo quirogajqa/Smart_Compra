@@ -36,34 +36,33 @@ fun OrdenamientoDropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(
-                text = { Text("INGRESO_ASC") },
-                onClick = {
-                    onCriterioSeleccionado(OrdenamientoCriterio.INGRESO_ASC)
-                    expanded = false
+            @Composable
+            fun createMenuItem(criterio: OrdenamientoCriterio, texto: String) {
+                val isSelected = criterioActual == criterio
+                val itemColor = if (isSelected) {
+                    MaterialTheme.colorScheme.tertiary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
                 }
-            )
-            DropdownMenuItem(
-                text = { Text("INGRESO_DSC") },
-                onClick = {
-                    onCriterioSeleccionado(OrdenamientoCriterio.INGRESO_DSC)
-                    expanded = false
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("NOMBRE_ASC") },
-                onClick = {
-                    onCriterioSeleccionado(OrdenamientoCriterio.NOMBRE_ASC)
-                    expanded = false
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("NOMBRE_DSC") },
-                onClick = {
-                    onCriterioSeleccionado(OrdenamientoCriterio.NOMBRE_DSC)
-                    expanded = false
-                }
-            )
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = texto,
+                            color = itemColor
+                        )
+                    },
+                    onClick = {
+                        onCriterioSeleccionado(criterio)
+                        expanded = false
+                    }
+                )
+            }
+
+            createMenuItem(OrdenamientoCriterio.NOMBRE_ASC, "NOMBRE ↓")
+            createMenuItem(OrdenamientoCriterio.NOMBRE_DSC, "NOMBRE ↑")
+            createMenuItem(OrdenamientoCriterio.INGRESO_ASC, "INGRESO ↓")
+            createMenuItem(OrdenamientoCriterio.INGRESO_DSC, "INGRESO ↑")
+
         }
     }
 }
