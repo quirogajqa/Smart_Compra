@@ -57,11 +57,10 @@ fun ComprasScreen(
 
     val uiState by viewModel.comprasUiState.collectAsStateWithLifecycle()
     val compraList by viewModel.comprasList.collectAsStateWithLifecycle()
+    val criterioActual by viewModel.criterioOrdenamiento.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
-
-    val criterioActual by viewModel.criterioOrdenamiento.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -74,7 +73,9 @@ fun ComprasScreen(
                 actions = {
                     OrdenamientoDropdown(
                         criterioActual = criterioActual,
-                        onCriterioSeleccionado = viewModel::setCriterioOrdenamiento
+                        onCriterioSeleccionado = { nuevoCriterio ->
+                            viewModel.setCriterioOrdenamiento(nuevoCriterio)
+                        }
                     )
                 }
             )
