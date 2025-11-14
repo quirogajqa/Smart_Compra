@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.annotation.meta.When
 import kotlin.collections.plus
 
 @HiltViewModel
@@ -113,6 +115,7 @@ class ComprasViewModel @Inject constructor(
             _comprasUiState.value.copy( isButtonAddEnabled = false )
         }
         _comprasUiState.update { ComprasUiState() }
+        reordenarLista()
 
         calcularTotal()
     }
@@ -170,12 +173,49 @@ class ComprasViewModel @Inject constructor(
     fun clearShowDialog(){
         _comprasUiState.update { ComprasUiState( showBottomSheet = true ) }
     }
+
+    private val _criterioOrdenamiento = MutableStateFlow(OrdenamientoCriterio.INGRESO_DSC)
+    val criterioOrdenamiento: StateFlow<OrdenamientoCriterio> = _criterioOrdenamiento.asStateFlow()
+
+    fun setCriterioOrdenamiento(criterio: OrdenamientoCriterio) {
+        _criterioOrdenamiento.value = criterio
+        reordenarLista()
+    }
+    private fun reordenarLista() {
+        val criterio: OrdenamientoCriterio = _criterioOrdenamiento.value
+        return when (criterio){
+
+            OrdenamientoCriterio.INGRESO_ASC -> {
+                _comprasList.update { currentList ->
+                    currentList.sortedBy { it.fechaIngreso }
+                }
+            }
+
+            OrdenamientoCriterio.INGRESO_DSC -> {
+                _comprasList.update { currentList ->
+                    currentList.sortedByDescending { it.fechaIngreso }
+                }
+            }
+
+            OrdenamientoCriterio.NOMBRE_ASC -> {
+                _comprasList.update { currentList ->
+                    currentList.sortedBy { it.nombre }
+                }
+            }
+
+            OrdenamientoCriterio.NOMBRE_DSC -> {
+                _comprasList.update { currentList ->
+                    currentList.sortedByDescending { it.nombre }
+                }
+            }
+        }
+    }
 }
+
 private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
 private fun isPrecioValid(precio: Double): Boolean = precio > 0.0
 private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
 private fun isPackValid(pack: Int): Boolean = pack > 0
-
 
 data class ComprasUiState(
     val nombre: String = "",
@@ -189,3 +229,10 @@ data class ComprasUiState(
     val isEnabledClear: Boolean = false,
     val showBottomSheet: Boolean = false
 )
+
+enum class OrdenamientoCriterio {
+    INGRESO_ASC,
+    INGRESO_DSC,
+    NOMBRE_ASC,
+    NOMBRE_DSC
+}

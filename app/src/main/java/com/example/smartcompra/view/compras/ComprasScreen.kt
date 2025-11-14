@@ -31,7 +31,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.view.compras.components.AgregarCompraScreen
 import com.example.smartcompra.view.compras.components.CompraCard
+import com.example.smartcompra.view.compras.components.OrdenamientoDropdown
 import com.example.smartcompra.viewmodel.ComprasViewModel
 import kotlinx.coroutines.launch
 
@@ -57,6 +61,8 @@ fun ComprasScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
+    val criterioActual by viewModel.criterioOrdenamiento.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -64,7 +70,13 @@ fun ComprasScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                ),
+                actions = {
+                    OrdenamientoDropdown(
+                        criterioActual = criterioActual,
+                        onCriterioSeleccionado = viewModel::setCriterioOrdenamiento
+                    )
+                }
             )
         },
         floatingActionButton = {

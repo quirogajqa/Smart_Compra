@@ -6,5 +6,6 @@ data class Compra(
     val precio: Double,
     val descuento: Int,
     val pack: Int,
-    val precioFinal: Double
+    val precioFinal: Double,
+    val fechaIngreso: Long = System.currentTimeMillis()
 )
