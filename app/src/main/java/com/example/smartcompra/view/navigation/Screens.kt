@@ -1,12 +1,7 @@
 package com.example.smartcompra.view.navigation
 
-import kotlinx.serialization.Serializable
+sealed class Destination(val route: String)
 
-@Serializable
-object Home
-
-@Serializable
-object Carrito
-
-@Serializable
-object Comparador
+object Home: Destination("home_route")
+object Comparador : Destination("comparador_route")
+object Carrito : Destination("carrito_route")
