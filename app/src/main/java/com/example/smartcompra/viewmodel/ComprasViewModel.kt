@@ -33,6 +33,9 @@ class ComprasViewModel @Inject constructor(
     //private val _comprasList = MutableStateFlow<List<Compra>>(emptyList())
     val comprasList: StateFlow<List<Compra>> = _comprasList
 
+    private val _criterioOrdenamiento = MutableStateFlow(OrdenamientoCriterio.INGRESO_DSC)
+    val criterioOrdenamiento: StateFlow<OrdenamientoCriterio> = _criterioOrdenamiento.asStateFlow()
+
     fun onNombreChanged(nombre: String) {
         _comprasUiState.update {
             _comprasUiState.value.copy( nombre = nombre.trim().toCapitalizar())
@@ -176,9 +179,6 @@ class ComprasViewModel @Inject constructor(
     fun clearShowDialog(){
         _comprasUiState.update { ComprasUiState( showBottomSheet = true ) }
     }
-
-    private val _criterioOrdenamiento = MutableStateFlow(OrdenamientoCriterio.INGRESO_DSC)
-    val criterioOrdenamiento: StateFlow<OrdenamientoCriterio> = _criterioOrdenamiento.asStateFlow()
 
     fun setCriterioOrdenamiento(criterio: OrdenamientoCriterio) {
         _criterioOrdenamiento.value = criterio

@@ -14,6 +14,8 @@ lifecycleViewmodelCompose = "2.9.4"
 
 #Navigation
 navigationCompose = "2.9.6"
+#Serialization
+kotlinSerialization = "1.9.0"
 
 #ksp
 ksp = "2.2.20-2.0.3"
@@ -46,6 +48,8 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 
 #Navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+#Serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -63,3 +67,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 #Hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+#Serialization
+jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}

@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
+    //Serialization
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+
     // Hilt
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -71,6 +74,8 @@ dependencies {
 
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
+    //Serialization
+    implementation(libs.kotlinx.serialization.json)
 
     // ViewModel Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)

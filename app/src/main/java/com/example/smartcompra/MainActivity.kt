@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import com.example.smartcompra.ui.theme.SmartCompraTheme
 import com.example.smartcompra.view.comparador.ComparadorScreen
 import com.example.smartcompra.view.compras.ComprasScreen
+import com.example.smartcompra.view.home.HomeScreen
+import com.example.smartcompra.view.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,7 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SmartCompraTheme {
-                ComprasScreen()
+                AppNavigation()
             }
         }
     }
