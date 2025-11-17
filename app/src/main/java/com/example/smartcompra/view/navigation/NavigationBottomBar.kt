@@ -1,4 +1,4 @@
-package com.example.smartcompra.view.home.components
+package com.example.smartcompra.view.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,11 +20,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.smartcompra.view.navigation.AppNavigation
-import com.example.smartcompra.view.navigation.Carrito
-import com.example.smartcompra.view.navigation.Comparador
-import com.example.smartcompra.view.navigation.Destination
-import com.example.smartcompra.view.navigation.Home
 
 @Composable
 fun NavigationBottomBar() {
@@ -93,11 +88,10 @@ fun NavigationBottomBar() {
             }
         }
     ) { contentPadding ->
-        // Contenido principal: el NavHost que muestra las pantallas
         AppNavigation(
             navController = navController,
             startDestination = startDestination,
-            modifier = Modifier.padding(contentPadding) // Aplica el padding del Scaffold
+            modifier = Modifier.padding(contentPadding)
         )
     }
 }
