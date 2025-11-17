@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -50,36 +51,10 @@ fun ComparadorScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Comparador de precios") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        },
-        floatingActionButton = {
-            SmallFloatingActionButton(
-                onClick = { viewModel.onShowDialog(true) },
-                shape = CircleShape,
-                containerColor = MaterialTheme.colorScheme.tertiary,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar un producto",
-                    tint = MaterialTheme.colorScheme.onTertiary
-                )
-            }
-        }
-    ) { padding ->
-
-        Column(
+        Box(
             Modifier
-                .padding(padding)
+                .fillMaxSize()
         ) {
-
             // Contenido principal
             if (productList.isEmpty()) {
                 Box(
@@ -106,11 +81,24 @@ fun ComparadorScreen(
                     }
                 }
             }
+
+            SmallFloatingActionButton(
+                onClick = { viewModel.onShowDialog(true) },
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Agregar un producto",
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
+            }
         }
-    }
 
     if (uiState.showDialog) {
-
         val closeSheetAction: () -> Unit = {
             scope.launch { sheetState.hide() }.invokeOnCompletion {
                 if (!sheetState.isVisible) {
@@ -128,10 +116,10 @@ fun ComparadorScreen(
             shape = MaterialTheme.shapes.extraLarge,
             tonalElevation = 2.dp,
         ) {
-            Column (
+            Column(
                 Modifier
                     .verticalScroll(scrollState)
-            ){
+            ) {
                 AgregarProductoScreen(
                     onCloseSheet = closeSheetAction
                 )

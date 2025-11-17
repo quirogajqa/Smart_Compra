@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -20,7 +21,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.smartcompra.view.navigation.components.CurrentTopBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationBottomBar() {
     val navController = rememberNavController()
@@ -30,6 +33,9 @@ fun NavigationBottomBar() {
     }
 
     Scaffold(
+        topBar = {
+            CurrentTopBar(selectedDestination)
+        },
         bottomBar = {
             NavigationBar(
                 windowInsets = NavigationBarDefaults.windowInsets,
@@ -88,10 +94,13 @@ fun NavigationBottomBar() {
             }
         }
     ) { contentPadding ->
-        AppNavigation(
-            navController = navController,
-            startDestination = startDestination,
-            modifier = Modifier.padding(contentPadding)
-        )
-    }
+
+            AppNavigation(
+                navController = navController,
+                startDestination = startDestination,
+                modifier = Modifier
+                    .padding(contentPadding)
+            )
+        }
+
 }
