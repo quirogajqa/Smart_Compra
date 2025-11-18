@@ -1,7 +1,12 @@
 package com.example.smartcompra.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.UUID
 
+@Entity(tableName = "Compared_article")
 data class ArticuloComparado(
+    @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val nombre: String,
     val marca: String?,
     val cantidad: Int,

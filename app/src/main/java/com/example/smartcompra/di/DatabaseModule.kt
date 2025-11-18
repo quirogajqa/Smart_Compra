@@ -2,6 +2,7 @@ package com.example.smartcompra.di
 
 import android.content.Context
 import com.example.smartcompra.data.local.ArticuloCompradoDao
+import com.example.smartcompra.data.local.ComparedArticleDao
 import com.example.smartcompra.data.local.SmartCompraDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,5 +26,10 @@ object DatabaseModule {
     @Provides
     fun provideArticuloCompradoDao(database: SmartCompraDatabase): ArticuloCompradoDao {
         return database.articuloCompradoDao()
+    }
+
+    @Provides
+    fun provideComparedArticleDao(database: SmartCompraDatabase): ComparedArticleDao {
+        return database.comparedArticleDao()
     }
 }

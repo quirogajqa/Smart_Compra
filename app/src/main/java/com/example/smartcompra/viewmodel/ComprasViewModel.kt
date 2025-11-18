@@ -130,7 +130,7 @@ class ComprasViewModel @Inject constructor(
 
     private fun loadArticles(){
         viewModelScope.launch {
-            val cachedArticles = articuloCompradoDao.getPurchasedArticles()
+            val cachedArticles = articuloCompradoDao.getAllPurchasedArticles()
             _comprasList.value = cachedArticles
 
             calcularTotal()

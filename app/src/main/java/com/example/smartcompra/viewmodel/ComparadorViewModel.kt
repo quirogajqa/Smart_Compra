@@ -1,16 +1,20 @@
 package com.example.smartcompra.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.smartcompra.data.local.ArticuloCompradoDao
+import com.example.smartcompra.data.local.ComparedArticleDao
 import com.example.smartcompra.data.models.ArticuloComparado
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ComparadorViewModel @Inject constructor(
-
+    private val comparedArticleDao: ComparedArticleDao,
 ) : ViewModel () {
     private val _productoUiState = MutableStateFlow(ProductoUiState())
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
@@ -20,6 +24,10 @@ class ComparadorViewModel @Inject constructor(
     private val _productList = MutableStateFlow<List<ArticuloComparado>>(emptyList())
 
     val productList: StateFlow<List<ArticuloComparado>> = _productList
+
+    init {
+        loadArticles()
+    }
 
     fun onNombreChanged(nombre: String) {
         _productoUiState.update {
@@ -157,9 +165,24 @@ class ComparadorViewModel @Inject constructor(
         val unidadAnterior = _productoUiState.value.unidad
         _productoUiState.update { ProductoUiState(nombre = nombreAnterior, unidad = unidadAnterior) }
 
+        viewModelScope.launch {
+            comparedArticleDao.insertArticle(newArticuloComparado)
+        }
+
         VerificarMejorPrecio()
 
         sortProductosByBestPrice()
+    }
+
+    private fun loadArticles(){
+        viewModelScope.launch {
+            val cachedArticles = comparedArticleDao.getAllComparedArticles()
+            _productList.value = cachedArticles
+
+            VerificarMejorPrecio()
+
+            sortProductosByBestPrice()
+        }
     }
 
     private fun CalcularValorNormalizado (cantidad: Int, precio: Double, descuento: Int, pack: Int, unidad: String): Double{
@@ -186,6 +209,9 @@ class ComparadorViewModel @Inject constructor(
     }
 
     fun onProductoDeleted(articuloComparado: ArticuloComparado) {
+        viewModelScope.launch {
+            comparedArticleDao.deleteArticleById(articuloComparado.id)
+        }
         _productList.update { currentList ->
             currentList - articuloComparado
         }

@@ -10,7 +10,7 @@ import com.example.smartcompra.data.models.ArticuloComprado
 interface ArticuloCompradoDao {
 
     @Query("SELECT *  FROM articulos_comprados")
-    suspend fun getPurchasedArticles(): List<ArticuloComprado>
+    suspend fun getAllPurchasedArticles(): List<ArticuloComprado>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticles(articles: List<ArticuloComprado>)
