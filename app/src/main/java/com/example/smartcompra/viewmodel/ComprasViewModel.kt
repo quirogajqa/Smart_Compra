@@ -297,7 +297,7 @@ class ComprasViewModel @Inject constructor(
 private fun isNombreValid(nombre: String): Boolean = nombre.length >= 2
 private fun isPrecioValid(precio: Double): Boolean = precio > 0.0
 private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
-private fun isPackValid(pack: Int): Boolean = pack > 0
+private fun isPackValid(pack: Int): Boolean = pack >= 0
 
 data class ComprasUiState(
     val nombre: String = "",

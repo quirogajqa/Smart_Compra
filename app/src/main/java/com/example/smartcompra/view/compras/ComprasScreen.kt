@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,8 +47,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.smartcompra.ui.theme.AppShape
 import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.view.compras.components.AgregarCompraScreen
 import com.example.smartcompra.view.compras.components.CompraCard
@@ -232,14 +236,34 @@ fun ComprasScreen(
                         viewModel.crearNuevaListaYGuardarId(uiState.nombreLista)
                         viewModel.onShowDialog(false)
                     },
-                    enabled = uiState.nombreLista.isNotBlank()
+                    enabled = uiState.nombreLista.isNotBlank(),
+                    shape = AppShape.medium,
+                    elevation = ButtonDefaults.buttonElevation(2.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                    )
                 ) {
-                    Text("Guardar")
+                    Text(
+                        "Guardar",
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp)
+                    )
                 }
             },
             dismissButton = {
-                Button(onClick = { viewModel.onShowDialog(false) }) {
-                    Text("Cancelar")
+                Button(
+                    onClick = { viewModel.onShowDialog(false) },
+                    shape = AppShape.medium,
+                    elevation = ButtonDefaults.buttonElevation(2.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                    )
+                ) {
+                    Text(
+                        "Cancelar",
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp)
+                    )
                 }
             },
 
@@ -251,9 +275,19 @@ fun ComprasScreen(
                 TextField(
                     value = uiState.nombreLista,
                     onValueChange = { viewModel.onNombreListaChanged(it) },
-                    label = { Text("Nombre de la lista") },
+                    label = { Text("Nombre de la lista",style = MaterialTheme.typography.labelLarge) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                        focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        cursorColor = MaterialTheme.colorScheme.tertiary,
+                    )
                 )
             }
         )
