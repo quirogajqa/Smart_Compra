@@ -1,5 +1,6 @@
 package com.example.smartcompra.view.navigation
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -34,11 +35,15 @@ fun NavigationBottomBar() {
     }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val shouldShowBottomBar = currentRoute != DetalleLista::class.qualifiedName
+    val routesWithBottomBar = listOf(Home.route, Comparador.route, Carrito.route)
+    val shouldShowBottomBar = currentRoute in routesWithBottomBar
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         topBar = {
-            CurrentTopBar(selectedDestination)
+            if (shouldShowBottomBar) {
+                CurrentTopBar(selectedDestination)
+            }
         },
         bottomBar = {
             if (shouldShowBottomBar) {
@@ -100,13 +105,11 @@ fun NavigationBottomBar() {
             }
         }
     ) { contentPadding ->
-
-            AppNavigation(
-                navController = navController,
-                startDestination = startDestination,
-                modifier = Modifier
-                    .padding(contentPadding)
-            )
-        }
-
+        AppNavigation(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = Modifier
+                .padding(contentPadding)
+        )
+    }
 }

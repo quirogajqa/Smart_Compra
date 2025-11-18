@@ -3,7 +3,6 @@ package com.example.smartcompra.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.smartcompra.data.local.ShoppingListDao
-import com.example.smartcompra.data.models.ArticuloComprado
 import com.example.smartcompra.data.models.ArticuloToSave
 import com.example.smartcompra.data.models.ListaCompra
 import dagger.hilt.android.lifecycle.HiltViewModel
