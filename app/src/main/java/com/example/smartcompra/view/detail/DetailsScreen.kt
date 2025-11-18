@@ -39,7 +39,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.view.compras.components.OrdenamientoDropdown
-import com.example.smartcompra.view.home.components.ArticuloCard
+import com.example.smartcompra.view.detail.components.ArticuloCard
 import com.example.smartcompra.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,14 +75,23 @@ fun DetailsScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver atrás",
-                            tint = MaterialTheme.colorScheme.surface
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                ),
+                actions = {
+                    OrdenamientoDropdown(
+                        criterioActual = criterioActual,
+                        onCriterioSeleccionado = { nuevoCriterio ->
+                            viewModel.setCriterioOrdenamiento(nuevoCriterio)
+                        },
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             )
         }
     ) { padding ->
@@ -108,19 +117,6 @@ fun DetailsScreen(
                         contentPadding = PaddingValues(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        item {
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                OrdenamientoDropdown(
-                                    criterioActual = criterioActual,
-                                    onCriterioSeleccionado = { nuevoCriterio ->
-                                        viewModel.setCriterioOrdenamiento(nuevoCriterio)
-                                    }
-                                )
-                            }
-                        }
                         items(
                             items = productList,
                         ) { articulo ->
@@ -165,5 +161,4 @@ fun DetailsScreen(
             }
         }
     }
-
 }

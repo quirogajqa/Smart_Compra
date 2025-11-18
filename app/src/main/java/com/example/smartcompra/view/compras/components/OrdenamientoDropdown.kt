@@ -20,7 +20,8 @@ import com.example.smartcompra.viewmodel.OrdenamientoCriterio
 @Composable
 fun OrdenamientoDropdown(
     criterioActual: OrdenamientoCriterio,
-    onCriterioSeleccionado: (OrdenamientoCriterio) -> Unit
+    onCriterioSeleccionado: (OrdenamientoCriterio) -> Unit,
+    color: Color
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -33,7 +34,7 @@ fun OrdenamientoDropdown(
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "Opciones de Ordenamiento",
-                tint = Color.Black
+                tint = color
             )
         }
 

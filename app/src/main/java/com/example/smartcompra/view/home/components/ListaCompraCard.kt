@@ -1,6 +1,5 @@
 package com.example.smartcompra.view.home.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -26,11 +24,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.smartcompra.data.models.ArticuloComprado
 import com.example.smartcompra.data.models.ListaCompra
 import com.example.smartcompra.ui.theme.AppShape
 import com.example.smartcompra.utils.toChileanPesos
-import com.example.smartcompra.viewmodel.ComprasViewModel
 import com.example.smartcompra.viewmodel.HomeViewModel
 
 @Composable
@@ -87,7 +83,7 @@ fun ListaCompraCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "11/07/1991"
+                    text = listaCompra.fechaActual
                 )
 
                 Text(

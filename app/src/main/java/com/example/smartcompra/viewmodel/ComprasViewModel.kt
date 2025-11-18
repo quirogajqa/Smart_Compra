@@ -204,6 +204,13 @@ class ComprasViewModel @Inject constructor(
         calcularTotal()
     }
 
+    fun onDeleteAll(){
+        viewModelScope.launch {
+            articuloCompradoDao.deleteAllArticles()
+        }
+        _comprasList.value = emptyList()
+    }
+
     fun onShowBottomSheet(showBottomSheet: Boolean) {
         _comprasUiState.update {
             _comprasUiState.value.copy(showBottomSheet = showBottomSheet)

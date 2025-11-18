@@ -225,7 +225,12 @@ class ComparadorViewModel @Inject constructor(
         VerificarMejorPrecio()
         sortProductosByBestPrice()
     }
-
+    fun onDeleteAll(){
+        viewModelScope.launch {
+            comparedArticleDao.deleteAllArticles()
+        }
+        _productList.value = emptyList()
+    }
     private fun sortProductosByBestPrice(){
         _productList.update { currentList ->
             currentList.sortedBy { it.precioNormalizado }

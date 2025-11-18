@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
@@ -85,7 +86,7 @@ fun ComprasScreen(
                 ) {
                     Text(
                         text = "Ingrese un producto a su lista",
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                 }
             } else {
@@ -101,6 +102,15 @@ fun ComprasScreen(
                             horizontalArrangement = Arrangement.End
                         ) {
                             IconButton(
+                                onClick = { viewModel.onDeleteAll() }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.CleaningServices,
+                                    contentDescription = "Limpiar",
+                                    tint = Color.Black
+                                )
+                            }
+                            IconButton(
                                 onClick = { viewModel.onShowDialog(true) }
                             ) {
                                 Icon(
@@ -109,12 +119,12 @@ fun ComprasScreen(
                                     tint = Color.Black
                                 )
                             }
-
                             OrdenamientoDropdown(
                                 criterioActual = criterioActual,
                                 onCriterioSeleccionado = { nuevoCriterio ->
                                     viewModel.setCriterioOrdenamiento(nuevoCriterio)
-                                }
+                                },
+                                color = Color.Black
                             )
                         }
                     }

@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -57,7 +57,7 @@ fun NavigationBottomBar() {
                             navController.navigate(route = Comparador.route)
                             selectedDestination = Comparador.route
                         },
-                        icon = { Icon(Icons.Filled.Scale, contentDescription = "Comparador") },
+                        icon = { Icon(Icons.Filled.SwapVert, contentDescription = "Comparador") },
                         label = { Text("Comparar") },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -92,7 +92,7 @@ fun NavigationBottomBar() {
                             selectedDestination = Carrito.route
                         },
                         icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Compras") },
-                        label = { Text("Lista") },
+                        label = { Text("Compra") },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
                             selectedTextColor = MaterialTheme.colorScheme.primary,
