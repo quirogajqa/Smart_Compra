@@ -2,7 +2,6 @@ package com.example.smartcompra.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smartcompra.data.local.ArticuloCompradoDao
 import com.example.smartcompra.data.local.ComparedArticleDao
 import com.example.smartcompra.data.models.ArticuloComparado
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -145,14 +144,14 @@ class ComparadorViewModel @Inject constructor(
             unidad = _productoUiState.value.unidad,
             descuento = _productoUiState.value.descuento,
             pack = _productoUiState.value.pack,
-            precioNormalizado = CalcularValorNormalizado(
+            precioNormalizado = calcularValorNormalizado(
                 _productoUiState.value.cantidad,
                 _productoUiState.value.precio,
                 _productoUiState.value.descuento,
                 _productoUiState.value.pack,
                 _productoUiState.value.unidad,
             ),
-            unidadNormalizada = CalcularUnidadNormalizada(_productoUiState.value.unidad)
+            unidadNormalizada = calcularUnidadNormalizada(_productoUiState.value.unidad)
         )
         _productList.update {currentList ->
             currentList + newArticuloComparado
@@ -169,7 +168,7 @@ class ComparadorViewModel @Inject constructor(
             comparedArticleDao.insertArticle(newArticuloComparado)
         }
 
-        VerificarMejorPrecio()
+        verificarMejorPrecio()
 
         sortProductosByBestPrice()
     }
@@ -180,7 +179,7 @@ class ComparadorViewModel @Inject constructor(
             val cachedArticles = comparedArticleDao.getAllComparedArticles()
             _productList.value = cachedArticles
 
-            VerificarMejorPrecio()
+            verificarMejorPrecio()
 
             sortProductosByBestPrice()
 
@@ -188,17 +187,16 @@ class ComparadorViewModel @Inject constructor(
         }
     }
 
-    private fun CalcularValorNormalizado (cantidad: Int, precio: Double, descuento: Int, pack: Int, unidad: String): Double{
-        var precioNormalizado: Double
-        if ( unidad == "g" || unidad == "mL" ){
-            precioNormalizado = ((precio * ((100.0 - descuento)/100.0)) / ((cantidad * pack) / 1000.0))
+    private fun calcularValorNormalizado (cantidad: Int, precio: Double, descuento: Int, pack: Int, unidad: String): Double{
+        val precioNormalizado: Double = if ( unidad == "g" || unidad == "mL" ){
+            ((precio * ((100.0 - descuento)/100.0)) / ((cantidad * pack) / 1000.0))
         } else {
-            precioNormalizado = ((precio * ((100.0 - descuento)/100.0)) / (cantidad * pack))
+            ((precio * ((100.0 - descuento)/100.0)) / (cantidad * pack))
         }
         return precioNormalizado
     }
 
-    private fun VerificarMejorPrecio () {
+    private fun verificarMejorPrecio () {
         val productosActuales = _productList.value
 
         val menorPrecio = productosActuales.minOfOrNull { it.precioNormalizado }
@@ -218,7 +216,7 @@ class ComparadorViewModel @Inject constructor(
         _productList.update { currentList ->
             currentList - articuloComparado
         }
-        VerificarMejorPrecio()
+        verificarMejorPrecio()
         sortProductosByBestPrice()
     }
 
@@ -228,17 +226,23 @@ class ComparadorViewModel @Inject constructor(
         }
     }
 
-    private fun CalcularUnidadNormalizada(unidadIngresada: String): String{
-        if (unidadIngresada == "un"){
-            return "Unidad"
-        }else if (unidadIngresada == "m"){
-            return "Metro"
-        }else if (unidadIngresada == "g" || unidadIngresada == "Kg"){
-            return "Kilogramo"
-        } else if (unidadIngresada == "mL" || unidadIngresada == "L") {
-            return "Litro"
-        } else {
-            return unidadIngresada
+    private fun calcularUnidadNormalizada(unidadIngresada: String): String{
+        when (unidadIngresada) {
+            "un" -> {
+                return "Unidad"
+            }
+            "m" -> {
+                return "Metro"
+            }
+            "g", "Kg" -> {
+                return "Kilogramo"
+            }
+            "mL", "L" -> {
+                return "Litro"
+            }
+            else -> {
+                return unidadIngresada
+            }
         }
     }
 
