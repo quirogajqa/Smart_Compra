@@ -2,8 +2,11 @@ package com.example.smartcompra.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smartcompra.data.local.ArticuloCompradoDao
+import com.example.smartcompra.data.local.CurrentListpurchasedDao
+import com.example.smartcompra.data.local.ShoppingListDao
 import com.example.smartcompra.data.models.ArticuloComprado
+import com.example.smartcompra.data.models.ListaCompra
+import com.example.smartcompra.data.models.Producto
 import com.example.smartcompra.utils.toCapitalizar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -12,22 +15,25 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.collections.plus
 
 @HiltViewModel
 class ComprasViewModel @Inject constructor(
-    private val articuloCompradoDao: ArticuloCompradoDao,
+    private val currentListpurchasedDao: CurrentListpurchasedDao,
+    private val shoppingListDao: ShoppingListDao,
+
 ) : ViewModel () {
 
     private val _comprasUiState = MutableStateFlow(ComprasUiState())
     val comprasUiState: StateFlow<ComprasUiState> = _comprasUiState
 
 
-    private val _comprasList = MutableStateFlow<List<ArticuloComprado>>(emptyList())
-    val comprasList: StateFlow<List<ArticuloComprado>> = _comprasList
+    private val _comprasList = MutableStateFlow<List<Producto>>(emptyList())
+    val comprasList: StateFlow<List<Producto>> = _comprasList
 
     private val _criterioOrdenamiento = MutableStateFlow(OrdenamientoCriterio.INGRESO_DSC)
     val criterioOrdenamiento: StateFlow<OrdenamientoCriterio> = _criterioOrdenamiento.asStateFlow()
+
+    val _listaActualId = MutableStateFlow<Long?>(null)
 
     init {
         loadArticles()
@@ -98,7 +104,7 @@ class ComprasViewModel @Inject constructor(
     }
 
     fun onCompraAdded() {
-        val newArticuloComprado = ArticuloComprado(
+        val newArticuloComprado = Producto(
             nombre = _comprasUiState.value.nombre,
             cantidad = _comprasUiState.value.cantidad,
             precio = _comprasUiState.value.precio,
@@ -120,7 +126,7 @@ class ComprasViewModel @Inject constructor(
         _comprasUiState.update { ComprasUiState() }
 
         viewModelScope.launch {
-            articuloCompradoDao.insertArticle(newArticuloComprado)
+            currentListpurchasedDao.insertArticle(newArticuloComprado)
         }
 
         reordenarLista()
@@ -131,7 +137,7 @@ class ComprasViewModel @Inject constructor(
     private fun loadArticles(){
         _comprasUiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val cachedArticles = articuloCompradoDao.getAllPurchasedArticles()
+            val cachedArticles = currentListpurchasedDao.getAllPurchasedArticles()
             _comprasList.value = cachedArticles
 
             calcularTotal()
@@ -175,12 +181,12 @@ class ComprasViewModel @Inject constructor(
         }
     }
 
-    fun onCompraDeleted(articuloComprado: ArticuloComprado) {
+    fun onCompraDeleted(producto: Producto) {
         viewModelScope.launch {
-            articuloCompradoDao.deleteArticleById(articuloComprado.id)
+            currentListpurchasedDao.deleteArticleById(producto.id)
         }
         _comprasList.update { currentList ->
-            currentList - articuloComprado
+            currentList - producto
         }
         calcularTotal()
     }
@@ -228,6 +234,24 @@ class ComprasViewModel @Inject constructor(
             }
         }
     }
+
+//    private fun crearNuevaListaYGuardarId(nombreLista: String) {
+//        viewModelScope.launch {
+//            val nuevaLista = ListaCompra(nombre = nombreLista)
+//            val idGenerado = shoppingListDao.insertLista(nuevaLista)
+//            _listaActualId.value = idGenerado
+//            //guardarIdListaEnProductos(idGenerado)
+//        }
+//    }
+
+//    private fun guardarIdListaEnProductos(listaId: Long) {
+//        _comprasList.update { listaOriginal ->
+//
+//            listaOriginal.map { productoActual ->
+//                productoActual.copy(listaPropietariaId = listaId)
+//            }
+//        }
+//    }
 }
 
 private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3

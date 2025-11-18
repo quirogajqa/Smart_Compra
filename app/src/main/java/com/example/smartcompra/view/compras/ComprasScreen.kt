@@ -118,7 +118,7 @@ fun ComprasScreen(
                     items(
                         items = compraList,
                     ) { compra ->
-                        CompraCard(articuloComprado = compra)
+                        //CompraCard(articuloComprado = compra)
                     }
                     item {
                         Spacer(Modifier.height(36.dp))

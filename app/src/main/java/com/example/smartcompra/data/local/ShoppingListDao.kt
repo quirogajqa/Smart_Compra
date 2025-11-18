@@ -2,14 +2,15 @@ package com.example.smartcompra.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.example.smartcompra.data.models.ArticuloComprado
 import com.example.smartcompra.data.models.ListaCompra
-import com.example.smartcompra.data.models.Producto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CompraDao {
+interface ShoppingListDao {
 
     // 1. Guardar la ListaCompra y obtener su ID.
     @Insert
@@ -17,7 +18,7 @@ interface CompraDao {
 
     // 2. Guardar los productos (Nota: la clave foránea debe estar establecida en cada Producto).
     @Insert
-    suspend fun insertProductos(productos: List<Producto>)
+    suspend fun insertProductos(productos: List<ArticuloComprado>)
 
     // 3. Consultar la relación completa (Lista + Productos)
     @Transaction

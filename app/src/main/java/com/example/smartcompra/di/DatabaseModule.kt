@@ -1,8 +1,9 @@
 package com.example.smartcompra.di
 
 import android.content.Context
-import com.example.smartcompra.data.local.ArticuloCompradoDao
 import com.example.smartcompra.data.local.ComparedArticleDao
+import com.example.smartcompra.data.local.CurrentListpurchasedDao
+import com.example.smartcompra.data.local.ShoppingListDao
 import com.example.smartcompra.data.local.SmartCompraDatabase
 import dagger.Module
 import dagger.Provides
@@ -24,12 +25,17 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideArticuloCompradoDao(database: SmartCompraDatabase): ArticuloCompradoDao {
-        return database.articuloCompradoDao()
+    fun provideArticuloCompradoDao(database: SmartCompraDatabase): ShoppingListDao {
+        return database.shoppingListDao()
     }
 
     @Provides
     fun provideComparedArticleDao(database: SmartCompraDatabase): ComparedArticleDao {
         return database.comparedArticleDao()
+    }
+
+    @Provides
+    fun provideCurrentListpurchasedDao(database: SmartCompraDatabase): CurrentListpurchasedDao {
+        return database.currentListpurchasedDao()
     }
 }

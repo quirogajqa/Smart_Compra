@@ -2,8 +2,8 @@ package com.example.smartcompra.data.local
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.example.smartcompra.data.models.ArticuloComprado
 import com.example.smartcompra.data.models.ListaCompra
-import com.example.smartcompra.data.models.Producto
 
 data class ListaConProductos(
     @Embedded
@@ -13,5 +13,5 @@ data class ListaConProductos(
         parentColumn = "listaId",
         entityColumn = "listaPropietariaId"
     )
-    val productos: List<Producto>
+    val productos: List<ArticuloComprado>
 )
