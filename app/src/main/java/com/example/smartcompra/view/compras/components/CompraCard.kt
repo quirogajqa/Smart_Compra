@@ -31,18 +31,19 @@ import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.viewmodel.ComprasViewModel
 
 @Composable
-fun CompraCard (
+fun CompraCard(
     articuloComprado: ArticuloComprado,
     viewModel: ComprasViewModel = hiltViewModel()
-){
+) {
     Card(
-    modifier = Modifier
-    .padding(vertical = 4.dp),
-    shape = AppShape.medium,
-    colors = CardDefaults.cardColors(
-    containerColor = MaterialTheme.colorScheme.surface,
-    contentColor = MaterialTheme.colorScheme.onSurface
-    )
+        modifier = Modifier
+            .padding(vertical = 4.dp),
+        shape = AppShape.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Column(
             Modifier
@@ -70,9 +71,9 @@ fun CompraCard (
                     .fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Column {
                         Text("Precio: ", fontWeight = FontWeight.Bold)
                         Text("Cantidad: ", fontWeight = FontWeight.Bold)

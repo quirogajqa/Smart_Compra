@@ -257,7 +257,11 @@ class ComprasViewModel @Inject constructor(
 
     fun crearNuevaListaYGuardarId(nombreLista: String) {
         viewModelScope.launch {
-            val nuevaLista = ListaCompra(nombre = nombreLista, total = _comprasUiState.value.total)
+            val nuevaLista = ListaCompra(
+                nombre = nombreLista,
+                total = _comprasUiState.value.total,
+                numeroArticulos = _comprasList.value.size
+            )
             val idGenerado = shoppingListDao.insertLista(nuevaLista)
             _listaActualId.value = idGenerado
             guardarListaDeProductos(idGenerado)

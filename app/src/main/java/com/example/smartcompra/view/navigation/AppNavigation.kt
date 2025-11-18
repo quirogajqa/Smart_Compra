@@ -1,14 +1,14 @@
 package com.example.smartcompra.view.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.smartcompra.view.comparador.ComparadorScreen
 import com.example.smartcompra.view.compras.ComprasScreen
+import com.example.smartcompra.view.detail.DetailsScreen
 import com.example.smartcompra.view.home.HomeScreen
 
 @Composable
@@ -24,7 +24,17 @@ fun AppNavigation(
     ) {
 
         composable(Home.route) {
-            HomeScreen()
+            HomeScreen(
+                navigateToDetails = { listaCompra ->
+                    navController.navigate(
+                        DetalleLista(
+                            nombre = listaCompra.nombre,
+                            listaId = listaCompra.listaId,
+                            total = listaCompra.total
+                        )
+                    )
+                },
+            )
         }
 
         composable(Comparador.route) {
@@ -33,6 +43,16 @@ fun AppNavigation(
 
         composable(Carrito.route) {
             ComprasScreen()
+        }
+
+        composable<DetalleLista> { backStackEntry ->
+            val detail = backStackEntry.toRoute<DetalleLista>()
+            DetailsScreen(
+                nombre = detail.nombre,
+                listaId = detail.listaId,
+                total = detail.total,
+                onNavigateBack = { navController.navigateUp() }
+            )
         }
     }
 }

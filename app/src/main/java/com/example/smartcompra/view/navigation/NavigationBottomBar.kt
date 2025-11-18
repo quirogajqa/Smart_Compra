@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.smartcompra.view.navigation.components.CurrentTopBar
 
@@ -31,66 +32,71 @@ fun NavigationBottomBar() {
     var selectedDestination by rememberSaveable {
         mutableStateOf(startDestination.route)
     }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val shouldShowBottomBar = currentRoute != DetalleLista::class.qualifiedName
 
     Scaffold(
         topBar = {
             CurrentTopBar(selectedDestination)
         },
         bottomBar = {
-            NavigationBar(
-                windowInsets = NavigationBarDefaults.windowInsets,
-                containerColor = MaterialTheme.colorScheme.surface,
-            ) {
-                NavigationBarItem(
-                    selected = selectedDestination == Comparador.route,
-                    onClick = {
-                        navController.navigate(route = Comparador.route)
-                        selectedDestination = Comparador.route
-                              } ,
-                    icon = { Icon(Icons.Filled.Scale, contentDescription = "Comparador") },
-                    label = { Text("Comparar") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.primary,
-                        selectedTextColor = MaterialTheme.colorScheme.primary,
-                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+            if (shouldShowBottomBar) {
+                NavigationBar(
+                    windowInsets = NavigationBarDefaults.windowInsets,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ) {
+                    NavigationBarItem(
+                        selected = selectedDestination == Comparador.route,
+                        onClick = {
+                            navController.navigate(route = Comparador.route)
+                            selectedDestination = Comparador.route
+                        },
+                        icon = { Icon(Icons.Filled.Scale, contentDescription = "Comparador") },
+                        label = { Text("Comparar") },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
-                )
 
-                NavigationBarItem(
-                    selected = selectedDestination == Home.route,
-                    onClick = {
-                        navController.navigate(route = Home.route)
-                        selectedDestination = Home.route
-                              } ,
-                    icon = { Icon(Icons.Filled.Home, contentDescription = "Comparador") },
-                    label = { Text("Home") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.primary,
-                        selectedTextColor = MaterialTheme.colorScheme.primary,
-                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    NavigationBarItem(
+                        selected = selectedDestination == Home.route,
+                        onClick = {
+                            navController.navigate(route = Home.route)
+                            selectedDestination = Home.route
+                        },
+                        icon = { Icon(Icons.Filled.Home, contentDescription = "Comparador") },
+                        label = { Text("Home") },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
-                )
 
-                NavigationBarItem(
-                    selected = selectedDestination == Carrito.route,
-                    onClick = {
-                        navController.navigate(route = Carrito.route)
-                        selectedDestination = Carrito.route
-                              },
-                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Compras") },
-                    label = { Text("Lista") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = MaterialTheme.colorScheme.primary,
-                        selectedTextColor = MaterialTheme.colorScheme.primary,
-                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    NavigationBarItem(
+                        selected = selectedDestination == Carrito.route,
+                        onClick = {
+                            navController.navigate(route = Carrito.route)
+                            selectedDestination = Carrito.route
+                        },
+                        icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Compras") },
+                        label = { Text("Lista") },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
-                )
+                }
             }
         }
     ) { contentPadding ->

@@ -8,5 +8,6 @@ data class ListaCompra(
     @PrimaryKey(autoGenerate = true)
     val listaId: Long = 0,
     val nombre: String,
-    val total: Double
+    val total: Double,
+    val numeroArticulos: Int
 )

@@ -1,5 +1,6 @@
 package com.example.smartcompra.view.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,10 +34,11 @@ import com.example.smartcompra.viewmodel.ComprasViewModel
 import com.example.smartcompra.viewmodel.HomeViewModel
 
 @Composable
-fun ListaCompraCard (
+fun ListaCompraCard(
     listaCompra: ListaCompra,
-    viewModel: HomeViewModel = hiltViewModel()
-){
+    viewModel: HomeViewModel = hiltViewModel(),
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(vertical = 4.dp),
@@ -44,78 +46,31 @@ fun ListaCompraCard (
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
-        )
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        onClick = onClick
     ) {
         Column(
             Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
-
             Row(
                 Modifier
                     .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column {
-                    Text(
-                        text = listaCompra.nombre,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                }
-            }
+                Text(
+                    text = listaCompra.nombre,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                )
 
-            Spacer(Modifier.height(8.dp))
-
-            Row(
-                Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Column {
-
-//                        Text("Total de productos: ", fontWeight = FontWeight.Bold)
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            "Total: ",
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
-                    Spacer(Modifier.width(12.dp))
-
-                    Column(
-                        Modifier
-                            .width(130.dp)
-                    ) {
-//                        Text(
-//                            "${listaCompra.} un",
-//                            Modifier.fillMaxWidth(),
-//                            textAlign = TextAlign.Right
-//                        )
-
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            listaCompra.total.toChileanPesos(),
-                            Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Right,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.tertiary
-                        )
-
-                    }
-                }
-                Spacer(Modifier.width(12.dp))
                 IconButton(
                     onClick = {
                         viewModel.onListaDeleted(listaCompra)
-                              },
+                    },
                     Modifier
                         .align(Alignment.Top),
                 ) {
@@ -124,6 +79,45 @@ fun ListaCompraCard (
                         contentDescription = "Eliminar"
                     )
                 }
+            }
+
+            Row(
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "11/07/1991"
+                )
+
+                Text(
+                    text = "Numero de artículos: ${listaCompra.numeroArticulos.toString()}",
+                )
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            Row(
+                Modifier
+                    .fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    "Total: ",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Text(
+                    listaCompra.total.toChileanPesos(),
+                    Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Right,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
             }
         }
     }

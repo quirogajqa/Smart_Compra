@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.smartcompra.data.models.ListaCompra
 import com.example.smartcompra.view.comparador.components.AgregarProductoScreen
 import com.example.smartcompra.view.comparador.components.ProductoCard
 import com.example.smartcompra.view.home.components.ListaCompraCard
@@ -38,7 +39,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigateToDetails: (ListaCompra) -> Unit,
 ) {
     val uiState by viewModel.UiState.collectAsStateWithLifecycle()
     val productList by viewModel.comprasList.collectAsStateWithLifecycle()
@@ -78,7 +80,10 @@ fun HomeScreen(
                     items(
                         items = productList,
                     ) { lista ->
-                        ListaCompraCard(listaCompra = lista)
+                        ListaCompraCard(
+                            listaCompra = lista,
+                            onClick = { navigateToDetails(lista) }
+                        )
                     }
                 }
             }

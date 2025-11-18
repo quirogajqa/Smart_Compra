@@ -1,7 +1,6 @@
-package com.example.smartcompra.view.comparador.components
+package com.example.smartcompra.view.home.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,24 +20,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.smartcompra.data.models.ArticuloComparado
+import com.example.smartcompra.data.models.ArticuloComprado
+import com.example.smartcompra.data.models.ArticuloToSave
 import com.example.smartcompra.ui.theme.AppShape
 import com.example.smartcompra.utils.toChileanPesos
-import com.example.smartcompra.viewmodel.ComparadorViewModel
+import com.example.smartcompra.viewmodel.ComprasViewModel
+
 
 @Composable
-fun ProductoCard(
-    articuloComparado: ArticuloComparado,
-    viewModel: ComparadorViewModel = hiltViewModel()
+fun ArticuloCard(
+    articuloComprado: ArticuloToSave
 ) {
-
-
     Card(
         modifier = Modifier
             .padding(vertical = 4.dp),
@@ -62,29 +59,9 @@ fun ProductoCard(
             ) {
                 Column {
                     Text(
-                        text = articuloComparado.nombre,
+                        text = articuloComprado.nombre,
                         style = MaterialTheme.typography.titleLarge,
                     )
-                    if (!articuloComparado.marca.isNullOrEmpty()) {
-                        Text(
-                            text = articuloComparado.marca,
-                        )
-                    }
-                }
-                if (articuloComparado.bestPrice) {
-                    Card(
-                        shape = AppShape.medium,
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF4CAF50),
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Box(
-                            Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
-                        ) {
-                            Text("MEJOR")
-                        }
-                    }
                 }
             }
 
@@ -93,24 +70,25 @@ fun ProductoCard(
             Row(
                 Modifier
                     .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Column {
                         Text("Precio: ", fontWeight = FontWeight.Bold)
                         Text("Cantidad: ", fontWeight = FontWeight.Bold)
-                        if (articuloComparado.descuento > 1) Text(
+                        if (articuloComprado.descuento > 1) Text(
                             "Descuento: ",
                             fontWeight = FontWeight.Bold
                         )
-                        if (articuloComparado.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
+                        if (articuloComprado.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "Precio\nunitario: ",
+                            "Precio final: ",
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -118,66 +96,47 @@ fun ProductoCard(
 
                     Column(
                         Modifier
-                            .width(150.dp)
+                            .width(130.dp)
                     ) {
                         Text(
-                            articuloComparado.precio.toChileanPesos(),
+                            articuloComprado.precio.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right
                         )
 
                         Text(
-                            "${articuloComparado.cantidad} ${articuloComparado.unidad}",
+                            "${articuloComprado.cantidad} un",
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right
                         )
 
-                        if (articuloComparado.descuento > 1) {
+                        if (articuloComprado.descuento > 1) {
                             Text(
-                                "${articuloComparado.descuento} %",
+                                "${articuloComprado.descuento} %",
                                 Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right,
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }
 
-                        if (articuloComparado.pack > 1) {
+                        if (articuloComprado.pack > 1) {
                             Text(
-                                "${articuloComparado.pack} un",
+                                "${articuloComprado.pack} un",
                                 Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right
                             )
                         }
-
                         Spacer(Modifier.height(8.dp))
-
                         Text(
-                            articuloComparado.precioNormalizado.toChileanPesos(),
+                            articuloComprado.precioFinal.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.tertiary
                         )
-                        Text(
-                            "por ${articuloComparado.unidadNormalizada}",
-                            Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Right,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.tertiary
-                        )
+
                     }
-                }
-                Spacer(Modifier.width(12.dp))
-                IconButton(
-                    onClick = { viewModel.onProductoDeleted(articuloComparado) },
-                    Modifier
-                        .align(Alignment.Top),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Eliminar"
-                    )
                 }
             }
         }
