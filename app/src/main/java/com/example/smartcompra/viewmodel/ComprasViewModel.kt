@@ -43,7 +43,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onNombreChanged(nombre: String) {
         _comprasUiState.update {
-            _comprasUiState.value.copy(nombre = nombre.trim().toCapitalizar())
+            _comprasUiState.value.copy(nombre = nombre.trimStart().toCapitalizar())
         }
 
         verifyInput()
@@ -107,7 +107,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onNombreListaChanged(nombreLista: String) {
         _comprasUiState.update {
-            _comprasUiState.value.copy(nombreLista = nombreLista.trim().toCapitalizar())
+            _comprasUiState.value.copy(nombreLista = nombreLista.trimStart().toCapitalizar())
         }
 
 //        verifyInput()
@@ -294,7 +294,7 @@ class ComprasViewModel @Inject constructor(
     }
 }
 
-private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
+private fun isNombreValid(nombre: String): Boolean = nombre.length >= 2
 private fun isPrecioValid(precio: Double): Boolean = precio > 0.0
 private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
 private fun isPackValid(pack: Int): Boolean = pack > 0
@@ -304,7 +304,7 @@ data class ComprasUiState(
     val cantidad: Int = 0,
     val precio: Double = 0.0,
     val descuento: Int = 0,
-    val pack: Int = 1,
+    val pack: Int = 0,
     val precioFinal: Double = 0.0,
     val total: Double = 0.0,
     val isButtonAddEnabled: Boolean = false,

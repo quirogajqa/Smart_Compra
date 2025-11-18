@@ -259,7 +259,7 @@ fun AgregarProductoScreen(
         Spacer(Modifier.height(8.dp))
 
         TextField(
-            value = if (uiState.pack < 2) "" else uiState.pack.toString(),
+            value = if (uiState.pack < 1) "" else uiState.pack.toString(),
             onValueChange = { viewModel.onPackChanged(it) },
             shape = AppShape.medium,
             singleLine = true,

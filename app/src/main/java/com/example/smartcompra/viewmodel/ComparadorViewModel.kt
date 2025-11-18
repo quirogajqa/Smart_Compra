@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.smartcompra.data.local.ArticuloCompradoDao
 import com.example.smartcompra.data.local.ComparedArticleDao
 import com.example.smartcompra.data.models.ArticuloComparado
+import com.example.smartcompra.utils.toCapitalizar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,7 @@ class ComparadorViewModel @Inject constructor(
 
     fun onNombreChanged(nombre: String) {
         _productoUiState.update {
-            _productoUiState.value.copy( nombre = nombre)
+            _productoUiState.value.copy( nombre = nombre.trimStart().toCapitalizar())
         }
 
         verifyInput()
@@ -41,7 +42,7 @@ class ComparadorViewModel @Inject constructor(
 
     fun onMarcaChanged(marca: String?) {
         _productoUiState.update {
-            _productoUiState.value.copy( marca = marca)
+            _productoUiState.value.copy( marca = marca?.trimStart()?.toCapitalizar())
         }
         verifyInput()
     }
@@ -193,6 +194,7 @@ class ComparadorViewModel @Inject constructor(
     }
 
     private fun CalcularValorNormalizado (cantidad: Int, precio: Double, descuento: Int, pack: Int, unidad: String): Double{
+        val pack = if(pack == 0) 1 else pack
         var precioNormalizado: Double
         if ( unidad == "g" || unidad == "mL" ){
             precioNormalizado = ((precio * ((100.0 - descuento)/100.0)) / ((cantidad * pack) / 1000.0))
@@ -263,14 +265,14 @@ class ComparadorViewModel @Inject constructor(
 
 }
 
-private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
+private fun isNombreValid(nombre: String): Boolean = nombre.length >= 2
 
 private fun isCantidadValid(cantidad: Int): Boolean = cantidad > 0
 
 private fun isPrecioValid(precio: Double): Boolean = precio > 0.0
 
 private fun isDescuentoValid(descuento: Int): Boolean = descuento >= 0 && descuento <= 100
-private fun isPackValid(pack: Int): Boolean = pack > 0
+private fun isPackValid(pack: Int): Boolean = pack >= 0
 
 fun isUnidadValid(unidad: String): Boolean = !unidad.isEmpty()
 
@@ -282,7 +284,7 @@ data class ProductoUiState(
     val precio: Double = 0.0,
     val unidad: String = "",
     val descuento: Int = 0,
-    val pack: Int = 1,
+    val pack: Int = 0,
     val precioNormalizado: Double = 0.0,
     val isProductoEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
