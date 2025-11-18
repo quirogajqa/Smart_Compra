@@ -175,6 +175,7 @@ class ComparadorViewModel @Inject constructor(
     }
 
     private fun loadArticles(){
+        _productoUiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val cachedArticles = comparedArticleDao.getAllComparedArticles()
             _productList.value = cachedArticles
@@ -182,6 +183,8 @@ class ComparadorViewModel @Inject constructor(
             VerificarMejorPrecio()
 
             sortProductosByBestPrice()
+
+            _productoUiState.update { it.copy(isLoading = false) }
         }
     }
 
@@ -276,5 +279,6 @@ data class ProductoUiState(
     val isEnabledClear: Boolean = false,
     val bestPrice: Boolean = false,
     val unidadNormalizada: String = "",
-    val showDialog: Boolean = false
+    val showDialog: Boolean = false,
+    val isLoading: Boolean = false
 )

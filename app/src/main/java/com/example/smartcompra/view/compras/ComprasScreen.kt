@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -62,82 +63,90 @@ fun ComprasScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    Box(
-    ) {
-        // Contenido principal
-        if (compraList.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Ingrese un producto a su lista",
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                item {
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        IconButton(
-                            onClick = { }
+    if (uiState.isLoading){
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.tertiary)
+        }
+    } else {
+        Box(
+        ) {
+            // Contenido principal
+            if (compraList.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Ingrese un producto a su lista",
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    item {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.Save,
-                                contentDescription = "Opciones de Ordenamiento",
-                                tint = Color.Black
+                            IconButton(
+                                onClick = { }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Save,
+                                    contentDescription = "Opciones de Ordenamiento",
+                                    tint = Color.Black
+                                )
+                            }
+
+                            OrdenamientoDropdown(
+                                criterioActual = criterioActual,
+                                onCriterioSeleccionado = { nuevoCriterio ->
+                                    viewModel.setCriterioOrdenamiento(nuevoCriterio)
+                                }
                             )
                         }
-
-                        OrdenamientoDropdown(
-                            criterioActual = criterioActual,
-                            onCriterioSeleccionado = { nuevoCriterio ->
-                                viewModel.setCriterioOrdenamiento(nuevoCriterio)
-                            }
-                        )
                     }
-                }
-                items(
-                    items = compraList,
-                ) { compra ->
-                    CompraCard(articuloComprado = compra)
-                }
-                item {
-                    Spacer(Modifier.height(36.dp))
-                }
+                    items(
+                        items = compraList,
+                    ) { compra ->
+                        CompraCard(articuloComprado = compra)
+                    }
+                    item {
+                        Spacer(Modifier.height(36.dp))
+                    }
 
+                }
+            }
+            SmallFloatingActionButton(
+                onClick = { viewModel.onShowDialog(true) },
+                shape = CircleShape,
+                containerColor = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 48.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Agregar un producto",
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
             }
         }
-        SmallFloatingActionButton(
-            onClick = { viewModel.onShowDialog(true) },
-            shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 48.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Agregar un producto",
-                tint = MaterialTheme.colorScheme.onTertiary
-            )
-        }
-    }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(start= 16.dp, end = 16.dp, bottom = 2.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 2.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .background(MaterialTheme.colorScheme.primary)
                     .padding(horizontal = 24.dp, vertical = 8.dp)
@@ -163,6 +172,7 @@ fun ComprasScreen(
                 }
             }
         }
+    }
 
 
 

@@ -129,11 +129,13 @@ class ComprasViewModel @Inject constructor(
     }
 
     private fun loadArticles(){
+        _comprasUiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val cachedArticles = articuloCompradoDao.getAllPurchasedArticles()
             _comprasList.value = cachedArticles
 
             calcularTotal()
+            _comprasUiState.update { it.copy(isLoading = false) }
         }
     }
 
@@ -243,7 +245,8 @@ data class ComprasUiState(
     val total: Double = 0.0,
     val isButtonAddEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
-    val showBottomSheet: Boolean = false
+    val showBottomSheet: Boolean = false,
+    val isLoading: Boolean = false
 )
 
 enum class OrdenamientoCriterio {
