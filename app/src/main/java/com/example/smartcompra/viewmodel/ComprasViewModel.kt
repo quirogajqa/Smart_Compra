@@ -3,7 +3,10 @@ package com.example.smartcompra.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.smartcompra.data.local.ArticuloCompradoDao
+import com.example.smartcompra.data.local.ShoppingListDao
 import com.example.smartcompra.data.models.ArticuloComprado
+import com.example.smartcompra.data.models.ListaCompra
+import com.example.smartcompra.data.models.toArticuloToSave
 import com.example.smartcompra.utils.toCapitalizar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -17,7 +20,8 @@ import kotlin.collections.plus
 @HiltViewModel
 class ComprasViewModel @Inject constructor(
     private val articuloCompradoDao: ArticuloCompradoDao,
-) : ViewModel () {
+    private val shoppingListDao: ShoppingListDao,
+) : ViewModel() {
 
     private val _comprasUiState = MutableStateFlow(ComprasUiState())
     val comprasUiState: StateFlow<ComprasUiState> = _comprasUiState
@@ -29,13 +33,15 @@ class ComprasViewModel @Inject constructor(
     private val _criterioOrdenamiento = MutableStateFlow(OrdenamientoCriterio.INGRESO_DSC)
     val criterioOrdenamiento: StateFlow<OrdenamientoCriterio> = _criterioOrdenamiento.asStateFlow()
 
+    private val _listaActualId = MutableStateFlow<Long?>(null)
+
     init {
         loadArticles()
     }
 
     fun onNombreChanged(nombre: String) {
         _comprasUiState.update {
-            _comprasUiState.value.copy( nombre = nombre.trim().toCapitalizar())
+            _comprasUiState.value.copy(nombre = nombre.trim().toCapitalizar())
         }
 
         verifyInput()
@@ -43,7 +49,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onPrecioChanged(precioString: String) {
         try {
-            val precio = if(precioString.isEmpty()) 0.0 else precioString.toDouble()
+            val precio = if (precioString.isEmpty()) 0.0 else precioString.toDouble()
             _comprasUiState.update {
                 _comprasUiState.value.copy(precio = precio)
             }
@@ -57,7 +63,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onCantidadChanged(cantidadString: String) {
         try {
-            val cantidad = if(cantidadString.isEmpty()) 0 else cantidadString.toInt()
+            val cantidad = if (cantidadString.isEmpty()) 0 else cantidadString.toInt()
             _comprasUiState.update {
                 _comprasUiState.value.copy(cantidad = cantidad)
             }
@@ -71,7 +77,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onDescuentoChanged(descuentoString: String) {
         try {
-            val descuento = if(descuentoString.isEmpty()) 0 else descuentoString.toInt()
+            val descuento = if (descuentoString.isEmpty()) 0 else descuentoString.toInt()
             _comprasUiState.update {
                 _comprasUiState.value.copy(descuento = descuento)
             }
@@ -85,7 +91,7 @@ class ComprasViewModel @Inject constructor(
 
     fun onPackChanged(packString: String) {
         try {
-            val pack = if(packString.isEmpty()) 0 else packString.toInt()
+            val pack = if (packString.isEmpty()) 0 else packString.toInt()
             _comprasUiState.update {
                 _comprasUiState.value.copy(pack = pack)
             }
@@ -94,6 +100,15 @@ class ComprasViewModel @Inject constructor(
         } catch (e: NumberFormatException) {
             println("Error de formato: $packString no es un número válido.")
         }
+
+    }
+
+    fun onNombreListaChanged(nombreLista: String) {
+        _comprasUiState.update {
+            _comprasUiState.value.copy(nombreLista = nombreLista.trim().toCapitalizar())
+        }
+
+//        verifyInput()
 
     }
 
@@ -110,12 +125,12 @@ class ComprasViewModel @Inject constructor(
                 _comprasUiState.value.descuento
             )
         )
-        _comprasList.update {currentList ->
+        _comprasList.update { currentList ->
             currentList + newArticuloComprado
         }
 
         _comprasUiState.update {
-            _comprasUiState.value.copy( isButtonAddEnabled = false )
+            _comprasUiState.value.copy(isButtonAddEnabled = false)
         }
         _comprasUiState.update { ComprasUiState() }
 
@@ -128,7 +143,7 @@ class ComprasViewModel @Inject constructor(
         calcularTotal()
     }
 
-    private fun loadArticles(){
+    private fun loadArticles() {
         _comprasUiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val cachedArticles = articuloCompradoDao.getAllPurchasedArticles()
@@ -152,26 +167,26 @@ class ComprasViewModel @Inject constructor(
 
     private fun verifyClear() {
         val producto = _comprasUiState.value
-        val isEnabledClear =  producto.nombre.isNotEmpty()
+        val isEnabledClear = producto.nombre.isNotEmpty()
                 || producto.precio != 0.0
                 || producto.cantidad != 0
                 || producto.descuento != 0
                 || producto.pack != 0
 
         _comprasUiState.update {
-            it.copy( isEnabledClear = isEnabledClear )
+            it.copy(isEnabledClear = isEnabledClear)
         }
     }
 
-    private fun calcularPrecioFinal(cantidad: Int, precio: Double, descuento: Int): Double{
-        val precioFinal = (cantidad * precio) * (100 - descuento)/100
+    private fun calcularPrecioFinal(cantidad: Int, precio: Double, descuento: Int): Double {
+        val precioFinal = (cantidad * precio) * (100 - descuento) / 100
         return precioFinal
     }
 
-    private fun calcularTotal(){
+    private fun calcularTotal() {
         val newTotal = _comprasList.value.sumOf { it.precioFinal }
         _comprasUiState.update {
-            it.copy( total = newTotal )
+            it.copy(total = newTotal)
         }
     }
 
@@ -185,23 +200,30 @@ class ComprasViewModel @Inject constructor(
         calcularTotal()
     }
 
-    fun onShowDialog(showDialog: Boolean){
+    fun onShowBottomSheet(showBottomSheet: Boolean) {
         _comprasUiState.update {
-            _comprasUiState.value.copy( showBottomSheet = showDialog)
+            _comprasUiState.value.copy(showBottomSheet = showBottomSheet)
         }
     }
 
-    fun clearShowDialog(){
-        _comprasUiState.update { ComprasUiState( showBottomSheet = true ) }
+    fun onShowDialog(showDialog: Boolean) {
+        _comprasUiState.update {
+            _comprasUiState.value.copy(showDialog = showDialog)
+        }
+    }
+
+    fun clearShowBottomSheet() {
+        _comprasUiState.update { ComprasUiState(showBottomSheet = true) }
     }
 
     fun setCriterioOrdenamiento(criterio: OrdenamientoCriterio) {
         _criterioOrdenamiento.value = criterio
         reordenarLista()
     }
+
     private fun reordenarLista() {
         val criterio: OrdenamientoCriterio = _criterioOrdenamiento.value
-        return when (criterio){
+        return when (criterio) {
 
             OrdenamientoCriterio.INGRESO_ASC -> {
                 _comprasList.update { currentList ->
@@ -228,6 +250,33 @@ class ComprasViewModel @Inject constructor(
             }
         }
     }
+
+    fun crearNuevaListaYGuardarId(nombreLista: String) {
+        viewModelScope.launch {
+            val nuevaLista = ListaCompra(nombre = nombreLista, total = _comprasUiState.value.total)
+            val idGenerado = shoppingListDao.insertLista(nuevaLista)
+            _listaActualId.value = idGenerado
+            guardarListaDeProductos(idGenerado)
+        }
+    }
+
+    private fun guardarListaDeProductos(listaId: Long) {
+
+        viewModelScope.launch {
+            val listaArticulosComprados = _comprasList.value
+
+            val listaToSave = listaArticulosComprados.map { articulo ->
+                articulo.toArticuloToSave(listaPropietariaId = listaId)
+            }
+
+            shoppingListDao.insertProductos(listaToSave)
+
+            _comprasList.update { emptyList() }
+            _comprasUiState.update { ComprasUiState() }
+
+            articuloCompradoDao.deleteAllArticles()
+        }
+    }
 }
 
 private fun isNombreValid(nombre: String): Boolean = nombre.length >= 3
@@ -246,7 +295,9 @@ data class ComprasUiState(
     val isButtonAddEnabled: Boolean = false,
     val isEnabledClear: Boolean = false,
     val showBottomSheet: Boolean = false,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val showDialog: Boolean = false,
+    val nombreLista: String = ""
 )
 
 enum class OrdenamientoCriterio {

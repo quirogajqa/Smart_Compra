@@ -6,10 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.smartcompra.data.models.ArticuloComparado
 import com.example.smartcompra.data.models.ArticuloComprado
+import com.example.smartcompra.data.models.ArticuloToSave
+import com.example.smartcompra.data.models.ListaCompra
 
 
 @Database(
-    entities = [ArticuloComprado::class, ArticuloComparado::class],
+    entities = [ArticuloComprado::class, ArticuloComparado::class, ArticuloToSave::class, ListaCompra::class],
     version = 1,
     exportSchema = false
 )
@@ -17,6 +19,8 @@ abstract class SmartCompraDatabase: RoomDatabase() {
     abstract fun articuloCompradoDao(): ArticuloCompradoDao
 
     abstract fun comparedArticleDao(): ComparedArticleDao
+
+    abstract fun shoppingListDao(): ShoppingListDao
 
     companion object{
         @Volatile

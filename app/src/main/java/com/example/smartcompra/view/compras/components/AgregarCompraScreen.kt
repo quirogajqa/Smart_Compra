@@ -190,7 +190,7 @@ fun AgregarCompraScreen (
                 modifier = Modifier.weight(5f),
                 onClick = {
                     viewModel.onCompraAdded();
-                    viewModel.onShowDialog(false)
+                    viewModel.onShowBottomSheet(false)
                 },
                 enabled = uiState.isButtonAddEnabled,
                 shape = AppShape.medium,
@@ -211,7 +211,7 @@ fun AgregarCompraScreen (
             Button(
                 modifier = Modifier.weight(3f),
                 onClick = {
-                    viewModel.clearShowDialog()
+                    viewModel.clearShowBottomSheet()
                     onCloseSheet()
                 },
                 enabled = uiState.isEnabledClear,

@@ -21,7 +21,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -63,7 +66,7 @@ fun ComprasScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    if (uiState.isLoading){
+    if (uiState.isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -98,7 +101,7 @@ fun ComprasScreen(
                             horizontalArrangement = Arrangement.End
                         ) {
                             IconButton(
-                                onClick = { }
+                                onClick = { viewModel.onShowDialog(true) }
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Save,
@@ -127,7 +130,7 @@ fun ComprasScreen(
                 }
             }
             SmallFloatingActionButton(
-                onClick = { viewModel.onShowDialog(true) },
+                onClick = { viewModel.onShowBottomSheet(true) },
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier
@@ -181,7 +184,7 @@ fun ComprasScreen(
         val closeSheetAction: () -> Unit = {
             scope.launch { sheetState.hide() }.invokeOnCompletion {
                 if (!sheetState.isVisible) {
-                    viewModel.onShowDialog(false)
+                    viewModel.onShowBottomSheet(false)
                 }
             }
         }
@@ -205,5 +208,44 @@ fun ComprasScreen(
             }
         }
 
+    }
+
+    if (uiState.showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onShowDialog(false)
+            },
+
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.crearNuevaListaYGuardarId(uiState.nombreLista)
+                        viewModel.onShowDialog(false)
+                    },
+                    enabled = uiState.nombreLista.isNotBlank()
+                ) {
+                    Text("Guardar")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { viewModel.onShowDialog(false) }) {
+                    Text("Cancelar")
+                }
+            },
+
+            title = {
+                Text(text = "Ingresar Título de la Lista")
+            },
+
+            text = {
+                TextField(
+                    value = uiState.nombreLista,
+                    onValueChange = { viewModel.onNombreListaChanged(it) },
+                    label = { Text("Nombre de la lista") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        )
     }
 }
