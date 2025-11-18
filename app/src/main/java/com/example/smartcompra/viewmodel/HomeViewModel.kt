@@ -32,7 +32,9 @@ class HomeViewModel @Inject constructor(
     private fun loadLists() {
         _UiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val cachedArticles = withContext(Dispatchers.IO) { shoppingListDao.getAllListas() }
+            val cachedArticles = withContext(Dispatchers.IO) {
+                shoppingListDao.getAllListas()
+            }
             _comprasList.value = cachedArticles
             _UiState.update { it.copy(isLoading = false) }
         }

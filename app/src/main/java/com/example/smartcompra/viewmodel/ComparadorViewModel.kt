@@ -7,10 +7,12 @@ import com.example.smartcompra.data.local.ComparedArticleDao
 import com.example.smartcompra.data.models.ArticuloComparado
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class ComparadorViewModel @Inject constructor(
@@ -177,7 +179,9 @@ class ComparadorViewModel @Inject constructor(
     private fun loadArticles(){
         _productoUiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val cachedArticles = comparedArticleDao.getAllComparedArticles()
+            val cachedArticles = withContext(Dispatchers.IO) {
+                comparedArticleDao.getAllComparedArticles()
+            }
             _productList.value = cachedArticles
 
             VerificarMejorPrecio()

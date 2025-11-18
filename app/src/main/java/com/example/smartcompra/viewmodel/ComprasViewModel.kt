@@ -10,11 +10,13 @@ import com.example.smartcompra.data.models.toArticuloToSave
 import com.example.smartcompra.utils.toCapitalizar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.collections.plus
 
 @HiltViewModel
@@ -146,7 +148,9 @@ class ComprasViewModel @Inject constructor(
     private fun loadArticles() {
         _comprasUiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val cachedArticles = articuloCompradoDao.getAllPurchasedArticles()
+            val cachedArticles = withContext(Dispatchers.IO) {
+                articuloCompradoDao.getAllPurchasedArticles()
+            }
             _comprasList.value = cachedArticles
 
             calcularTotal()
