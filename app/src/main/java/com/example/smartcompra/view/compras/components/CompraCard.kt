@@ -25,14 +25,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.smartcompra.data.models.Compra
+import com.example.smartcompra.data.models.ArticuloComprado
 import com.example.smartcompra.ui.theme.AppShape
 import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.viewmodel.ComprasViewModel
 
 @Composable
 fun CompraCard (
-    compra: Compra,
+    articuloComprado: ArticuloComprado,
     viewModel: ComprasViewModel = hiltViewModel()
 ){
     Card(
@@ -57,7 +57,7 @@ fun CompraCard (
             ) {
                 Column {
                     Text(
-                        text = compra.nombre,
+                        text = articuloComprado.nombre,
                         style = MaterialTheme.typography.titleLarge,
                     )
                 }
@@ -76,11 +76,11 @@ fun CompraCard (
                     Column {
                         Text("Precio: ", fontWeight = FontWeight.Bold)
                         Text("Cantidad: ", fontWeight = FontWeight.Bold)
-                        if (compra.descuento > 1) Text(
+                        if (articuloComprado.descuento > 1) Text(
                             "Descuento: ",
                             fontWeight = FontWeight.Bold
                         )
-                        if (compra.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
+                        if (articuloComprado.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(8.dp))
                         Text(
                             "Precio final: ",
@@ -97,36 +97,36 @@ fun CompraCard (
                             .width(130.dp)
                     ) {
                         Text(
-                            compra.precio.toChileanPesos(),
+                            articuloComprado.precio.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right
                         )
 
                         Text(
-                            "${compra.cantidad} un",
+                            "${articuloComprado.cantidad} un",
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right
                         )
 
-                        if (compra.descuento > 1) {
+                        if (articuloComprado.descuento > 1) {
                             Text(
-                                "${compra.descuento} %",
+                                "${articuloComprado.descuento} %",
                                 Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right,
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }
 
-                        if (compra.pack > 1) {
+                        if (articuloComprado.pack > 1) {
                             Text(
-                                "${compra.pack} un",
+                                "${articuloComprado.pack} un",
                                 Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right
                             )
                         }
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            compra.precioFinal.toChileanPesos(),
+                            articuloComprado.precioFinal.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
@@ -138,7 +138,7 @@ fun CompraCard (
                 }
                 Spacer(Modifier.width(12.dp))
                 IconButton(
-                    onClick = { viewModel.onCompraDeleted(compra) },
+                    onClick = { viewModel.onCompraDeleted(articuloComprado) },
                     Modifier
                         .align(Alignment.Top),
                 ) {

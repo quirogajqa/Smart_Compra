@@ -1,7 +1,7 @@
 package com.example.smartcompra.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.smartcompra.data.models.Producto
+import com.example.smartcompra.data.models.ArticuloComparado
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,18 +15,11 @@ class ComparadorViewModel @Inject constructor(
     private val _productoUiState = MutableStateFlow(ProductoUiState())
     val productoUiState: StateFlow<ProductoUiState> = _productoUiState
 
-    val productos = listOf(
-        Producto("Shampoo", "Lider",650, 100000.0, "un", 10,3,100000.0, "Unidad", true),
-        Producto("Acondicionador", "",70000, 1000.0, "un", 0,0,50000.0, "Litro", false),
-        Producto("Jabón", "",300, 10000.0, "un",0,0, 80000.0, "Kilogramo", false),
-        Producto("Pasta dental", "",12000, 1000.0, "un",0,0, 30000.0, "Metro", false)
-    )
 
-    private val _productList = MutableStateFlow<List<Producto>>(productos)
 
-    //private val _productList = MutableStateFlow<List<Producto>>(emptyList())
+    private val _productList = MutableStateFlow<List<ArticuloComparado>>(emptyList())
 
-    val productList: StateFlow<List<Producto>> = _productList
+    val productList: StateFlow<List<ArticuloComparado>> = _productList
 
     fun onNombreChanged(nombre: String) {
         _productoUiState.update {
@@ -136,7 +129,7 @@ class ComparadorViewModel @Inject constructor(
     }
 
     fun onProductoAdded() {
-        val newProducto = Producto(
+        val newArticuloComparado = ArticuloComparado(
             nombre = _productoUiState.value.nombre,
             marca = _productoUiState.value.marca,
             cantidad = _productoUiState.value.cantidad,
@@ -154,7 +147,7 @@ class ComparadorViewModel @Inject constructor(
             unidadNormalizada = CalcularUnidadNormalizada(_productoUiState.value.unidad)
         )
         _productList.update {currentList ->
-            currentList + newProducto
+            currentList + newArticuloComparado
         }
 
         _productoUiState.update {
@@ -192,9 +185,9 @@ class ComparadorViewModel @Inject constructor(
         }
     }
 
-    fun onProductoDeleted(producto: Producto) {
+    fun onProductoDeleted(articuloComparado: ArticuloComparado) {
         _productList.update { currentList ->
-            currentList - producto
+            currentList - articuloComparado
         }
         VerificarMejorPrecio()
         sortProductosByBestPrice()

@@ -27,14 +27,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.smartcompra.data.models.Producto
+import com.example.smartcompra.data.models.ArticuloComparado
 import com.example.smartcompra.ui.theme.AppShape
 import com.example.smartcompra.utils.toChileanPesos
 import com.example.smartcompra.viewmodel.ComparadorViewModel
 
 @Composable
 fun ProductoCard(
-    producto: Producto,
+    articuloComparado: ArticuloComparado,
     viewModel: ComparadorViewModel = hiltViewModel()
 ) {
 
@@ -61,16 +61,16 @@ fun ProductoCard(
             ) {
                 Column {
                     Text(
-                        text = producto.nombre,
+                        text = articuloComparado.nombre,
                         style = MaterialTheme.typography.titleLarge,
                     )
-                    if (!producto.marca.isNullOrEmpty()) {
+                    if (!articuloComparado.marca.isNullOrEmpty()) {
                         Text(
-                            text = producto.marca,
+                            text = articuloComparado.marca,
                         )
                     }
                 }
-                if (producto.bestPrice) {
+                if (articuloComparado.bestPrice) {
                     Card(
                         shape = AppShape.medium,
                         colors = CardDefaults.cardColors(
@@ -99,11 +99,11 @@ fun ProductoCard(
                     Column {
                         Text("Precio: ", fontWeight = FontWeight.Bold)
                         Text("Cantidad: ", fontWeight = FontWeight.Bold)
-                        if (producto.descuento > 1) Text(
+                        if (articuloComparado.descuento > 1) Text(
                             "Descuento: ",
                             fontWeight = FontWeight.Bold
                         )
-                        if (producto.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
+                        if (articuloComparado.pack > 1) Text("Pack: ", fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(8.dp))
                         Text(
                             "Precio\nunitario: ",
@@ -120,29 +120,29 @@ fun ProductoCard(
                             .width(150.dp)
                     ) {
                         Text(
-                            producto.precio.toChileanPesos(),
+                            articuloComparado.precio.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right
                         )
 
                         Text(
-                            "${producto.cantidad} ${producto.unidad}",
+                            "${articuloComparado.cantidad} ${articuloComparado.unidad}",
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right
                         )
 
-                        if (producto.descuento > 1) {
+                        if (articuloComparado.descuento > 1) {
                             Text(
-                                "${producto.descuento} %",
+                                "${articuloComparado.descuento} %",
                                 Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right,
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }
 
-                        if (producto.pack > 1) {
+                        if (articuloComparado.pack > 1) {
                             Text(
-                                "${producto.pack} un",
+                                "${articuloComparado.pack} un",
                                 Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Right
                             )
@@ -151,7 +151,7 @@ fun ProductoCard(
                         Spacer(Modifier.height(8.dp))
 
                         Text(
-                            producto.precioNormalizado.toChileanPesos(),
+                            articuloComparado.precioNormalizado.toChileanPesos(),
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
@@ -159,7 +159,7 @@ fun ProductoCard(
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            "por ${producto.unidadNormalizada}",
+                            "por ${articuloComparado.unidadNormalizada}",
                             Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Right,
                             fontWeight = FontWeight.ExtraBold,
@@ -169,7 +169,7 @@ fun ProductoCard(
                 }
                 Spacer(Modifier.width(12.dp))
                 IconButton(
-                    onClick = { viewModel.onProductoDeleted(producto) },
+                    onClick = { viewModel.onProductoDeleted(articuloComparado) },
                     Modifier
                         .align(Alignment.Top),
                 ) {

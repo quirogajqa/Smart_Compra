@@ -1,8 +1,9 @@
 package com.example.smartcompra.viewmodel
 
-import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModel
-import com.example.smartcompra.data.models.Compra
+import androidx.lifecycle.viewModelScope
+import com.example.smartcompra.data.local.ArticuloCompradoDao
+import com.example.smartcompra.data.models.ArticuloComprado
 import com.example.smartcompra.utils.toCapitalizar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -10,31 +11,27 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Locale
-import javax.annotation.meta.When
+import kotlinx.coroutines.launch
 import kotlin.collections.plus
 
 @HiltViewModel
 class ComprasViewModel @Inject constructor(
-
+    private val articuloCompradoDao: ArticuloCompradoDao,
 ) : ViewModel () {
 
     private val _comprasUiState = MutableStateFlow(ComprasUiState())
     val comprasUiState: StateFlow<ComprasUiState> = _comprasUiState
 
-    val compras = listOf(
-        Compra("Shampoo", 3,1650.0, 10, 1, 4455.0),
-        Compra("Acondicionador", 3,2200.0, 10, 1, 5940.0),
-        Compra("Jabón", 2,1650.0, 0, 1, 3300.0),
-        Compra("Pasta dental", 1,3456.0, 5, 3,3283.0)
-    )
 
-    private val _comprasList = MutableStateFlow<List<Compra>>(compras)
-    //private val _comprasList = MutableStateFlow<List<Compra>>(emptyList())
-    val comprasList: StateFlow<List<Compra>> = _comprasList
+    private val _comprasList = MutableStateFlow<List<ArticuloComprado>>(emptyList())
+    val comprasList: StateFlow<List<ArticuloComprado>> = _comprasList
 
     private val _criterioOrdenamiento = MutableStateFlow(OrdenamientoCriterio.INGRESO_DSC)
     val criterioOrdenamiento: StateFlow<OrdenamientoCriterio> = _criterioOrdenamiento.asStateFlow()
+
+    init {
+        loadArticles()
+    }
 
     fun onNombreChanged(nombre: String) {
         _comprasUiState.update {
@@ -101,7 +98,7 @@ class ComprasViewModel @Inject constructor(
     }
 
     fun onCompraAdded() {
-        val newCompra = Compra(
+        val newArticuloComprado = ArticuloComprado(
             nombre = _comprasUiState.value.nombre,
             cantidad = _comprasUiState.value.cantidad,
             precio = _comprasUiState.value.precio,
@@ -114,16 +111,30 @@ class ComprasViewModel @Inject constructor(
             )
         )
         _comprasList.update {currentList ->
-            currentList + newCompra
+            currentList + newArticuloComprado
         }
 
         _comprasUiState.update {
             _comprasUiState.value.copy( isButtonAddEnabled = false )
         }
         _comprasUiState.update { ComprasUiState() }
+
+        viewModelScope.launch {
+            articuloCompradoDao.insertArticle(newArticuloComprado)
+        }
+
         reordenarLista()
 
         calcularTotal()
+    }
+
+    private fun loadArticles(){
+        viewModelScope.launch {
+            val cachedArticles = articuloCompradoDao.getPurchasedArticles()
+            _comprasList.value = cachedArticles
+
+            calcularTotal()
+        }
     }
 
     private fun verifyInput() {
@@ -162,11 +173,13 @@ class ComprasViewModel @Inject constructor(
         }
     }
 
-    fun onCompraDeleted(compra: Compra) {
-        _comprasList.update { currentList ->
-            currentList - compra
+    fun onCompraDeleted(articuloComprado: ArticuloComprado) {
+        viewModelScope.launch {
+            articuloCompradoDao.deleteArticleById(articuloComprado.id)
         }
-
+        _comprasList.update { currentList ->
+            currentList - articuloComprado
+        }
         calcularTotal()
     }
 

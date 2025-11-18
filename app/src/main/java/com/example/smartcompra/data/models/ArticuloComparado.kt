@@ -1,6 +1,7 @@
 package com.example.smartcompra.data.models
 
-data class Producto(
+
+data class ArticuloComparado(
     val nombre: String,
     val marca: String?,
     val cantidad: Int,
