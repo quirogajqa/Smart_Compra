@@ -2,11 +2,13 @@
 
 > Tu asistente inteligente para compras organizadas y económicas.
 
-![Banner o Captura de Pantalla Principal de la App](assets/images/Screenshot_20251204_153924.png])
+<div align="center">
+  <img src="assets/images/Screenshot_20251204_153924.png" alt="Banner o Captura de Pantalla Principal de la App" width="300"/>
+</div>
 
 ## 📄 Descripción y Motivación
 
-[cite_start]**SmartCompra** es una aplicación móvil nativa para Android diseñada para ayudar a los usuarios a tomar decisiones de compra más inteligentes y gestionar sus gastos de manera eficiente[cite: 15].
+[cite_start]SmartCompra es una aplicación móvil nativa para Android diseñada para ayudar a los usuarios a tomar decisiones de compra más inteligentes y gestionar sus gastos de manera eficiente[cite: 15].
 
 ### La Problemática
 En el contexto actual, la variación de precios entre diferentes comercios puede ser confusa. A menudo olvidamos dónde vimos un producto más barato o compramos artículos sin verificar si realmente el precio es conveniente, lo que afecta la economía personal.
@@ -22,10 +24,13 @@ SmartCompra centraliza la información, permitiendo registrar precios, compararl
 
 Para ver una demostración completa de la funcionalidad de la aplicación y una explicación técnica de su estructura, visita el siguiente video en YouTube:
 
-[![Miniatura del Video](https://img.youtube.com/vi/[https://www.youtube.com/watch?v=9OEIhwL4s9I]/0.jpg)](https://www.youtube.com/watch?v=[https://www.youtube.com/watch?v=9OEIhwL4s9I])
+<div align="center">
 
-> [cite_start]Haz clic en la imagen o [aquí para ver el video]([https://www.youtube.com/watch?v=9OEIhwL4s9I])[cite: 27].
+[![Miniatura del Video](https://img.youtube.com/vi/9OEIhwL4s9I/0.jpg)](https://www.youtube.com/watch?v=9OEIhwL4s9I)
 
+</div>
+
+> [cite_start]Haz clic en la imagen o [aquí para ver el video](https://www.youtube.com/watch?v=9OEIhwL4s9I)[cite: 27].
 ---
 
 ## ✨ Características Principales
@@ -64,7 +69,7 @@ Para ver una demostración completa de la funcionalidad de la aplicación y una 
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [INSERTA AQUÍ EL ENLACE HTTPS DE TU REPOSITORIO]
+    git clone [https://github.com/quirogajqa/Smart_Compra]
     ```
 2.  **Abrir el proyecto:**
     Abre Android Studio y selecciona "Open an existing project", navegando hasta la carpeta clonada.
@@ -79,9 +84,9 @@ Para ver una demostración completa de la funcionalidad de la aplicación y una 
 
 Este portafolio de producto fue desarrollado por:
 
-* **[TU NOMBRE AQUÍ]** - Desarrollador Android
-* [Enlace a tu LinkedIn]
-* [Enlace a tu perfil de GitHub]
+* **Jhoseph Quiroga** - Desarrollador Android
+* [LinkedIn](https://www.linkedin.com/in/jhoseph-quiroga-aa1146114/)
+* [GitHub](https://github.com/quirogajqa)
 
 ---
 [cite_start]*Este proyecto es parte de la evaluación final del módulo de Desarrollo de Portafolio para Especialidades[cite: 1, 2].*
