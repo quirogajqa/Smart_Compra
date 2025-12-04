@@ -17,7 +17,6 @@ interface ShoppingListDao {
     @Insert
     suspend fun insertProductos(productos: List<ArticuloToSave>)
 
-    // 3. Consultar la relación completa (Lista + Productos)
     @Transaction
     @Query("SELECT * FROM listas_compras WHERE listaId = :id")
     suspend fun getListaConProductos(id: Long): ListaConProductos
